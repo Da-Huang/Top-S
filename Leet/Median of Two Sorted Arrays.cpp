@@ -1,32 +1,32 @@
 // Redo
 double findMedianSortedArrays(int A[], int m, int B[], int n) {
-  int beginA = 0, beginB = 0;
+  if ( m + n == 0 ) return 0;
   int kth = (m + n - 1) / 2;
-  while ( beginA < m && beginB < n && kth > 0 ) {
-    int dA = min(beginA + (kth - 1) / 2, m - 1);
-    int dB = min(beginB + (kth - 1) / 2, n - 1);
-    if ( A[dA] <= B[dB] ) {
-      kth -= dA + 1 - beginA;
-      beginA = dA + 1;
+  int beginA = 0, beginB = 0;
+  while ( beginA < m && beginB < n && kth ) {
+    int midA = beginA + min(m - 1, kth - 1) / 2;
+    int midB = beginB + min(n - 1, kth - 1) / 2;
+    if ( A[midA] <= B[midB] ) {
+      kth -= midA - beginA + 1;
+      beginA = midA + 1;
+
     } else {
-      kth -= dB + 1 - beginB;
-      beginB = dB + 1;
+      kth -= midB - beginB + 1;
+      beginB = midB + 1;
     }
   }
-  if ( beginA == m ) {
-    if ( (m + n) & 1 ) return B[beginB + kth];
-    else return double(B[beginB + kth] + B[beginB + kth + 1]) / 2;
-  }
-  if ( beginB == n ) {
-    if ( (m + n) & 1 ) return A[beginA + kth];
-    else return double(A[beginA + kth] + A[beginA + kth + 1]) / 2;
-  }
+
+  if ( beginA >= m )
+    return (m + n) & 1 ? B[beginB + kth] : double(B[beginB + kth] + B[beginB + kth + 1]) / 2;
+  if ( beginB >= n )
+    return (m + n) & 1 ? A[beginA + kth] : double(A[beginA + kth] + A[beginA + kth + 1]) / 2;
+
   // kth == 0
-  int first = min(A[beginA], B[beginB]);
-  if ( (m + n) & 1 ) return first;
-  int secondA = beginA + 1 < m ? A[beginA + 1] : INT_MAX;
-  int secondB = beginB + 1 < n ? B[beginB + 1] : INT_MAX;
-  int second = min({secondA, secondB, max(A[beginA], B[beginB])});
-  return double(first + second) / 2;
+  if ( (m + n) & 1 ) return min(A[beginA], B[beginB]);
+  int r1 = min(A[beginA], B[beginB]);
+  int r2 = max(A[beginA], B[beginB]);
+  if ( beginA + 1 < m ) r2 = min(r2, A[beginA + 1]);
+  if ( beginB + 1 < n ) r2 = min(r2, B[beginB + 1]);
+  return double(r1 + r2) / 2;
 }
 
