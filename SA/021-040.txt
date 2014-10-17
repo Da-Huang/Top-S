@@ -1,0 +1,67 @@
+021. 输入两个整数 n 和 m，从数列1，2，3.......n中随意取几个数，使其和等于 m ,要求将其中所有的可能组合列出来。
+解答：递归强解。
+
+
+022. 有4张红色的牌和4张蓝色的牌，主持人先拿任意两张，再分别在A、B、C三人额头上贴任意两张牌，
+A、B、C三人都可以看见其余两人额头上的牌，看完后让他们猜自己额头上是什么颜色的牌，
+A说不知道，B说不知道，C说不知道，然后A说知道了。
+请教如何推理，A是怎么知道的。
+解答：不会
+
+
+023. 用最简单，最快速的方法计算出下面这个圆形是否和正方形相交。"  
+3D坐标系 原点(0.0,0.0,0.0)
+圆形:
+半径r = 3.0
+圆心o = (*.*, 0.0, *.*)
+正方形:
+4个角坐标;  
+1:(*.*, 0.0, *.*)
+2:(*.*, 0.0, *.*)
+3:(*.*, 0.0, *.*)
+4:(*.*, 0.0, *.*)
+解答：不会
+
+
+024. 
+
+
+
+030. 在从1 到n 的正数中1 出现的次数
+题目：输入一个整数n，求从1 到n 这n 个整数的十进制表示中1 出现的次数。
+例如输入12，从1 到12 这些整数中包含1 的数字有1，10，11 和12，1 一共出现了5 次。
+分析：这是一道广为流传的google 面试题。
+解答：
+Suppose we have N=ABCDEFG.
+if G<1, # of 1’s in the units digits is ABCDEF, else ABCDEF+1
+if F<1, # of 1’s in the digit of tens is (ABCDE)*10, else if F==1: (ABCDE)*10+G+1, else (ABCDE+1)*10
+if E<1, # of 1’s in 3rd digit is (ABCD)*100, else if E==1: (ABCD)*100+FG+1, else (ABCD+1)*100
+… so on.
+if A=1, # of 1 in this digit is BCDEFG+1, else it’s 1*1000000;
+
+
+032. 有两个序列a,b，大小都为n,序列元素的值任意整数，无序；
+要求：通过交换a,b中的元素，使[序列a元素的和]与[序列b元素的和]之间的差最小。
+例如:  
+var a=[100,99,98,1,2, 3];
+var b=[1, 2, 3, 4,5,40];
+解答：
+
+
+033. 
+
+
+038. 有一个很大很大的输入流，大到没有存储器可以将其存储下来，
+而且只输入一次，如何从这个输入流中随机取得m 个记录。
+ANSWER
+
+That is, keep total number count N. If N<=m, just keep it.
+For N>m, generate a random number R=rand(N) in [0, N), replace a[R] with new number if R falls in [0, m)
+
+
+1.对于一个整数矩阵，存在一种运算，对矩阵中任意元素加一时，需要其相邻（上下左右）
+某一个元素也加一，现给出一正数矩阵，判断其是否能够由一个全零矩阵经过上述运算得到。
+ANSWER
+A assignment problem. Two ways to solve. 1: duplicate each cell to as many as its value, do Hungarian algorithm. Denote the sum of the matrix as M, the edge number is 2M, so the complexity is 2*M*M; 2: standard maximum flow. If the size of matrix is NxN, then the algorithm using Ford Fulkerson algorithm is M*N*N.
+too complex... I will do this when I have time...
+
