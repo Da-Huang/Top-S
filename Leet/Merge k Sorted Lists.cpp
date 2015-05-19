@@ -1,30 +1,30 @@
-// Redo
+// #redo
 ListNode* mergeKLists(vector<ListNode*>& lists) {
   const int N = lists.size();
-  int heap[N];
+  ListNode* heap[N];
   int heapSize = 0;
-  auto greaterList = [&lists] (int i, int j) {
-    return lists[i]->val > lists[j]->val;
+  auto greaterNode = [] (ListNode* p, ListNode* q) {
+    return p->val > q->val;
   };
   for (int i = 0; i < N; ++ i) {
     if (lists[i]) {
-      heap[heapSize ++] = i;
-      push_heap(heap, heap + heapSize, greaterList);
+      heap[heapSize ++] = lists[i];
+      push_heap(heap, heap + heapSize, greaterNode);
     }
   }
 
   ListNode HEAD(0);
   ListNode *tail = &HEAD;
   while (heapSize) {
-    int i = heap[0];
-    tail->next = lists[i];
-    tail = lists[i];
-    lists[i] = lists[i]->next;
+    ListNode *node = heap[0];
+    tail->next = node;
+    tail = node;
 
-    pop_heap(heap, heap + heapSize --, greaterList);
-    if (lists[i]) {
-      heap[heapSize ++] = i;
-      push_heap(heap, heap + heapSize, greaterList);
+    pop_heap(heap, heap + heapSize --, greaterNode);
+    node = node->next;
+    if (node) {
+      heap[heapSize ++] = node;
+      push_heap(heap, heap + heapSize, greaterNode);
     }
   }
   return HEAD.next;
