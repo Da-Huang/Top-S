@@ -1,4 +1,4 @@
-// Redo
+// #redo
 int jump(int A[], int n) {
   int res[n];
   if ( n <= 1 ) return 0;
@@ -13,3 +13,25 @@ int jump(int A[], int n) {
   return -1;
 }
 
+
+// #redo
+// #version2
+int jump(vector<int>& nums) {
+  const int N = nums.size();
+  if (N == 0) return -1;
+  int i = 1;
+  int next = 0 + nums[0];
+  int ans = 0;
+  while (i < N) {
+    ++ ans;
+    int newNext = next;
+    for (int j = i; j <= next && j < N; ++ j) {
+      newNext = max(newNext, j + nums[j]);
+    }
+    if (newNext == next && next < N - 1) return -1;
+
+    i = next + 1;
+    next = newNext;
+  }
+  return ans;
+}
