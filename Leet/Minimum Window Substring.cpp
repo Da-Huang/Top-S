@@ -1,37 +1,29 @@
 // Redo
-string minWindow(string S, string T) {
-  const int M = T.length();
-  S.push_back('#');
-  const int N = S.length();
-  if ( M == 0 ) return "";
+string minWindow(string s, string t) {
+  const int N = s.size();
+  const int M = t.size();
   int dict[128], mapping[128];
   memset(dict, 0, sizeof(dict));
   memset(mapping, 0, sizeof(mapping));
-  for (auto c : T) dict[c] ++;
 
-  int resBegin = 0, resEnd = 0;
-  int begin = 0, end = 0;
-  int count = 0;
-  while ( end < N ) {
-    if ( count == M ) {
-      if ( resEnd == resBegin || resEnd - resBegin > end - begin ) {
-        resBegin = begin;
-        resEnd = end;
+  for (auto c : t) ++ dict[c];
+  int minBegin = 0, minEnd = 0;
+  int i = 0, j = 0;
+  int match = 0;
+  while (i + M <= N) {
+    if (match < M) {
+      if (j >= N) break;
+      if (++ mapping[s[j]] <= dict[s[j]]) ++ match;
+      ++ j;
+
+    } else {
+      if (minEnd == minBegin || minEnd - minBegin > j - i) {
+        minBegin = i;
+        minEnd = j;
       }
-
-      if ( dict[S[begin]] ) {
-        if ( mapping[S[begin]] <= dict[S[begin]] ) count --;
-        mapping[S[begin]] --;
-      }
-      begin ++;
-
-    } else if ( dict[S[end]] == 0 ) end ++;
-    else {
-      if ( mapping[S[end]] < dict[S[end]] ) count ++;
-      mapping[S[end]] ++;
-      end ++;
+      if (-- mapping[s[i]] < dict[s[i]]) -- match;
+      ++ i;
     }
   }
-  return S.substr(resBegin, resEnd - resBegin);
+  return s.substr(minBegin, minEnd - minBegin);
 }
-
