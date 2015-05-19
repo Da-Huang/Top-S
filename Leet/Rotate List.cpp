@@ -1,18 +1,15 @@
 // Redo
-ListNode *rotateRight(ListNode *head, int k) {
-  if ( head == NULL ) return NULL;
-  int count = 0;
-  ListNode HEAD(0);
-  HEAD.next = head;
-  ListNode *tail;
-  for (tail = &HEAD; tail->next; tail = tail->next) count ++;
-  k = k % count;
-  if ( k == 0 ) return head;
-  ListNode *ptr = &HEAD;
-  for (int i = 0; i < count - k; i ++) ptr = ptr->next;
-  tail->next = HEAD.next;
-  HEAD.next = ptr->next;
+ListNode* rotateRight(ListNode* head, int k) {
+  if (head == NULL) return NULL;
+  int N = 1;
+  ListNode *tail = head;
+  for (; tail->next; tail = tail->next) ++ N;
+  k %= N;
+  if (k == 0) return head;
+  ListNode *ptr = head;
+  for (int i = 0; i < N - k - 1; ++ i) ptr = ptr->next;
+  ListNode *q = ptr->next;
   ptr->next = NULL;
-  return HEAD.next;
+  tail->next = head;
+  return q;
 }
-
