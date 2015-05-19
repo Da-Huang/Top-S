@@ -1,30 +1,17 @@
 // Redo
 vector<string> restoreIpAddresses(string s) {
-  vector<string> res;
-  const int N = s.length();
-  for (int i = max(0, N - 10); i + 3 < N && i < 3; i ++) {
-    const int a = stoi(s.substr(0, i + 1));
-    if ( s[0] == '0' && i + 1 > 1 || a > 255 ) break;
-    for (int j = max(i + 1, N - 7); j + 2 < N && j < i + 4; j ++) {
-      const int b = stoi(s.substr(i + 1, j - i));
-      if ( s[i + 1] == '0' && j - i > 1 || b > 255 ) break;
-      for (int k = max(j + 1, N - 4); k + 1 < N && k < j + 4; k ++) {
-        const int c = stoi(s.substr(j + 1, k - j));
-        if ( s[j + 1] == '0' && k - j > 1 || c > 255 ) break;
-        const int d = stoi(s.substr(k + 1));
-        if ( !(s[k + 1] == '0' && N - k - 1 > 1)  && d <= 255 ) {
-          string item = to_string(a);
-          item += ".";
-          item += to_string(b);
-          item += ".";
-          item += to_string(c);
-          item += ".";
-          item += to_string(d);
-          res.push_back(item);
-        }
+  vector<string> ans;
+  const int N = s.size();
+  for (int i = max(1,N-9); i <= 3 && i+3 <= N; ++ i) {
+    if (i > 1 && s[0] == '0' || stoi(s.substr(0,i)) > 255) break;
+    for (int j = max(i+1,N-6); j-i <= 3 && j+2 <= N; ++ j) {
+      if (j-i > 1 && s[i] == '0' || stoi(s.substr(i,j-i)) > 255) break;
+      for (int k = max(j+1,N-3); k-j <= 3 && k+1 <= N; ++ k) {
+        if (k-j > 1 && s[j] == '0' || stoi(s.substr(j,k-j)) > 255) break;
+        if (N-k > 1 && s[k] == '0' || stoi(s.substr(k)) > 255) continue;
+        ans.push_back(s.substr(0,i) + "." + s.substr(i,j-i) + "." + s.substr(j,k-j) + "." + s.substr(k));
       }
     }
   }
-  return res;
+  return ans;
 }
-
