@@ -1,47 +1,37 @@
 // Redo
-vector<int> findSubstring(string S, vector<string> &L) {
-  vector<int> res;
-  const int N = S.length();
-  const int M = L.size();
-  if ( N == 0 || M == 0 ) return res;
-  const int W = L[0].length();
-
+vector<int> findSubstring(string s, vector<string>& words) {
+  const int N = s.size();
+  const int M = words.size();
   unordered_map<string, int> dict;
-  for (auto &s : L) dict[s] ++;
-  unordered_map<string, int> mapping;
-  int count = 0;
-  for (int t = 0; t < W; t ++) {
-    int begin = t;
-    int end = t;
-    while ( true ) {
-      if ( end + W > N || dict.find(S.substr(end, W)) == dict.end() ) {
-        while ( begin < end ) {
-          mapping[S.substr(begin, W)] --;
-          count --;
-          begin += W;
-        }
-        begin += W;
-        end += W;
-        if ( end >= N ) break;
+  for (auto &word : words) ++ dict[word];
 
-      } else if ( mapping[S.substr(end, W)] < dict[S.substr(end, W)] ) {
-        mapping[S.substr(end, W)] ++;
-        count ++;
-        end += W;
-        if ( count == M ) res.push_back(begin);
+  vector<int> ans;
+  if (M == 0) return ans;
+  const int W = words[0].size();
+
+  for (int k = 0; k < W; ++ k) {
+    unordered_map<string, int> mapping;
+    int match = 0;
+    int i = k, j = k;
+    while (i + M * W <= N) { // NOTE: no need to judge j + W <= N
+      string word = s.substr(j, W);
+      if (dict.find(word) == dict.end()) {
+        j += W;
+        i = j;
+        mapping.clear();
+        match = 0;
+
+      } else if (mapping[word] == dict[word]) {
+        -- mapping[s.substr(i, W)];
+        -- match;
+        i += W;
 
       } else {
-        while ( S.substr(begin, W) != S.substr(end, W) ) {
-          mapping[S.substr(begin, W)] --;
-          count --;
-          begin += W;
-        }
-        mapping[S.substr(begin, W)] --;
-        count --;
-        begin += W;
+        ++ mapping[word];
+        if (++ match == M) ans.push_back(i);
+        j += W;
       }
     }
   }
-  return res;
+  return ans;
 }
-
