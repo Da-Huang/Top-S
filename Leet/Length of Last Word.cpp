@@ -1,10 +1,8 @@
-int lengthOfLastWord(const char *s) {
-  const int N = strlen(s);
-  int last = N - 1;
-  while ( last >= 0 && s[last] == ' ' ) last --;
-  if ( last < 0 ) return 0;
-  int rend = last - 1;
-  while ( rend >= 0 && s[rend] != ' ' ) rend --;
-  return last - rend;
+int lengthOfLastWord(string s) {
+  const int N = s.size();
+  int j = N - 1;
+  while (j >= 0 && s[j] == ' ') -- j;
+  int i = j;
+  while (i >= 0 && s[i] != ' ') -- i;
+  return j - i;
 }
-
