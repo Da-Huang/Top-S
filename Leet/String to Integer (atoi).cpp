@@ -1,26 +1,23 @@
-int atoi(const char *str) {
+// #redo
+int myAtoi(string str) {
+  const int N = str.size();
   int i = 0;
-  while ( str[i] == ' ' ) i ++;
+  while (i < N && str[i] == ' ') ++ i;
+  if (i == N) return 0;
+
+  int ans = 0;
   bool isNegative = false;
-  if ( str[i] == '-' ) {
+  if (str[i] == '+') ++ i;
+  else if (str[i] == '-') {
     isNegative = true;
-    i ++;
-
-  } else if ( str[i] == '+' ) {
-    i ++;
+    ++ i;
   }
 
-  int res = 0;
-  while ( isdigit(str[i]) ) {
-    int d = str[i] - '0';
-    if ( res < (INT_MIN + d) / 10 ) {
-      return isNegative ? INT_MIN : INT_MAX;
-    }
-    res = res * 10 - d;
-    i ++;
+  while (i < N && isdigit(str[i])) {
+    int p = str[i] - '0';
+    if (ans < (INT_MIN + p) / 10) return isNegative ? INT_MIN : INT_MAX;
+    ans = ans * 10 - p;
+    ++ i;
   }
-  if ( isNegative ) return res;
-  if ( res == INT_MIN ) return INT_MAX;
-  return -res;
+  return isNegative ? ans : ans == INT_MIN ? INT_MAX : -ans;
 }
-
