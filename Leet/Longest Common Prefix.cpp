@@ -1,15 +1,12 @@
-string longestCommonPrefix(vector<string> &strs) {
-  const int N = strs.size();
-  if ( N == 0 ) return "";
-  size_t len = 0;
-  while ( true ) {
-    if ( len >= strs[0].size() ) return strs[0].substr(0, len);
-    for (int i = 1; i < N; i ++) {
-      if ( len >= strs[i].size() ) return strs[0].substr(0, len);
-      if ( strs[i][len] != strs[0][len] ) return strs[0].substr(0, len);
+string longestCommonPrefix(vector<string>& strs) {
+  const int M = strs.size();
+  if (M == 0) return "";
+  const int N = strs[0].size();
+  int j;
+  for (j = 0; j < N; ++ j) {
+    for (int i = 1; i < M; ++ i) {
+      if (strs[0][j] != strs[i][j]) return strs[0].substr(0, j);
     }
-    len ++;
   }
-  return "";
+  return strs[0].substr(0, j);
 }
-
