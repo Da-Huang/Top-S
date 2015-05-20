@@ -1,23 +1,23 @@
-vector<vector<int>> __subsetsWithDup(vector<int> &S, int start=0) {
-  vector<vector<int>> res;
-  const int N = S.size();
-  if ( start == N ) {
-    res.push_back(vector<int>());
-    return res;
+// #redo
+void __subsetWithDup(vector<int> &nums, vector<int> &v, vector<vector<int>> &ans, size_t begin) {
+  if (begin == nums.size()) {
+    ans.push_back(v);
+    return;
   }
-  int end = start + 1;
-  while ( end < N && S[end] == S[start] ) end ++;
-  vector<vector<int>> subRes = __subsetsWithDup(S, end);
-  for (int i = 0; i <= end - start; i ++) {
-    for (auto &item : subRes) {
-      res.push_back(item);
-      res.rbegin()->insert(res.rbegin()->begin(), i, S[start]);
-    }
+  size_t end = begin + 1;
+  while (end < nums.size() && nums[begin] == nums[end]) ++ end;
+  __subsetWithDup(nums, v, ans, end);
+  for (size_t i = begin + 1; i <= end; ++ i) {
+    v.push_back(nums[begin]);
+    __subsetWithDup(nums, v, ans, end);
   }
-  return res;
+  v.erase(v.end() - end + begin, v.end());
 }
 
-vector<vector<int> > subsetsWithDup(vector<int> &S) {
-  sort(S.begin(), S.end());
-  return __subsetsWithDup(S);
+vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+  sort(nums.begin(), nums.end());
+  vector<vector<int>> ans;
+  vector<int> v;
+  __subsetWithDup(nums, v, ans, 0);
+  return ans;
 }
