@@ -1,13 +1,7 @@
-int maxProfit(vector<int> &prices) {
-  const int N = prices.size();
-  int res = 0;
-  int begin = 0;
-  while ( begin < N ) {
-    int end = begin + 1;
-    while ( end < N && prices[end] >= prices[end - 1] ) end ++;
-    res += prices[end - 1] - prices[begin];
-    begin = end;
+int maxProfit(vector<int>& prices) {
+  int ans = 0;
+  for (size_t i = 1; i < prices.size(); ++ i) {
+    ans += max(prices[i] - prices[i - 1], 0);
   }
-  return res;
+  return ans;
 }
-
