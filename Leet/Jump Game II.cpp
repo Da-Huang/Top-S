@@ -18,20 +18,14 @@ int jump(int A[], int n) {
 // #version2
 int jump(vector<int>& nums) {
   const int N = nums.size();
-  if (N == 0) return -1;
-  int i = 1;
-  int next = 0 + nums[0];
-  int ans = 0;
-  while (i < N) {
-    ++ ans;
-    int newNext = next;
-    for (int j = i; j <= next && j < N; ++ j) {
-      newNext = max(newNext, j + nums[j]);
+  int j = 0, ans = 0, k = 0;
+  for (int i = 0; i < N; ++ i) {
+    if (k < i) return -1;
+    if (i > j) {
+      ++ ans;
+      j = k;
     }
-    if (newNext == next && next < N - 1) return -1;
-
-    i = next + 1;
-    next = newNext;
+    k = max(k, i + nums[i]);
   }
   return ans;
 }
