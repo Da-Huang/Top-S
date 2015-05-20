@@ -1,3 +1,4 @@
+// #redo
 int findMin(vector<int>& nums) {
   const int N = nums.size();
   if (N == 0) return INT_MAX;
