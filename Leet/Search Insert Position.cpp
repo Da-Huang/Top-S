@@ -1,12 +1,11 @@
-int searchInsert(int A[], int n, int target) {
-  if ( n == 0 ) return 0;
-  int first = 0, last = n - 1;
-  while ( first < last ) {
-    const int mid = (first + last) / 2;
-    if ( A[mid] >= target ) last = mid - 1;
-    else first = mid + 1;
+int searchInsert(vector<int>& nums, int target) {
+  int N = nums.size();
+  if (N == 0) return 0;
+  int first = 0, last = N - 1;
+  while (first < last) {
+    int mid = first + (last - first) / 2;
+    if (nums[mid] < target) first = mid + 1;
+    else last = mid - 1;
   }
-  if ( A[first] >= target ) return first;
-  else return first + 1;
+  return nums[first] >= target ? first : first + 1;
 }
-
