@@ -1,21 +1,17 @@
-// Redo
-TreeNode *__sortedListToBST(ListNode *head, int first, int last, ListNode *&h) {
-  if ( first > last ) return NULL;
-  const int mid = (first + last) / 2; // TODO
-  TreeNode *left = __sortedListToBST(head, first, mid - 1, h);
-  TreeNode *root = new TreeNode(h->val);
-  h = h->next;
-  TreeNode *right = __sortedListToBST(head, mid + 1, last, h);
+TreeNode* __inorder(int first, int last, ListNode *&ptr) {
+  if (first > last) return NULL;
+  int mid = first + (last - first) / 2;
+  TreeNode *left = __inorder(first, mid - 1, ptr);
+  TreeNode *root = new TreeNode(ptr->val);
+  ptr = ptr->next;
+  TreeNode *right = __inorder(mid + 1, last, ptr);
   root->left = left;
   root->right = right;
   return root;
 }
 
-TreeNode *sortedListToBST(ListNode *head) {
-  if ( head == NULL ) return NULL;
+TreeNode* sortedListToBST(ListNode* head) {
   int N = 0;
-  for (ListNode *ptr = head; ptr; ptr = ptr->next) N ++;
-  ListNode *h = head;
-  return __sortedListToBST(head, 0, N - 1, h);
+  for (ListNode *ptr = head; ptr; ptr = ptr->next) ++ N;
+  return __inorder(0, N - 1, head);
 }
-
