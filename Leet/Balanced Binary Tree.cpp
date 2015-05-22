@@ -1,15 +1,13 @@
-pair<int, bool> isBalancedInner(TreeNode *root) {
-  if ( root == NULL ) return make_pair(0, true);
-  auto l = isBalancedInner(root->left);
-  if ( !l.second ) return make_pair(-1, false);
-  auto r = isBalancedInner(root->right);
-  if ( !r.second ) return make_pair(-1, false);
-  if ( abs(l.first - r.first) <= 1 )
-    return make_pair(max(l.first, r.first) + 1, true);
-  else return make_pair(-1, false);
+int __isBalance(TreeNode *root) {
+  if (root == NULL) return 0;
+  int ansl = __isBalance(root->left);
+  if (ansl < 0) return -1;
+  int ansr = __isBalance(root->right);
+  if (ansr < 0) return -1;
+  if (abs(ansl - ansr) > 1) return -1;
+  return max(ansl, ansr) + 1;
 }
 
-bool isBalanced(TreeNode *root) {
-  return isBalancedInner(root).second;
+bool isBalanced(TreeNode* root) {
+  return __isBalance(root) >= 0;
 }
-
