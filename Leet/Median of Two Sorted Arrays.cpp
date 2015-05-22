@@ -1,32 +1,38 @@
-// Redo
-double findMedianSortedArrays(int A[], int m, int B[], int n) {
-  if ( m + n == 0 ) return 0;
-  int kth = (m + n - 1) / 2;
-  int beginA = 0, beginB = 0;
-  while ( beginA < m && beginB < n && kth ) {
-    int midA = beginA + min(m - 1, kth - 1) / 2;
-    int midB = beginB + min(n - 1, kth - 1) / 2;
-    if ( A[midA] <= B[midB] ) {
-      kth -= midA - beginA + 1;
-      beginA = midA + 1;
-
+// #redo
+double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+  const int M = nums1.size();
+  const int N = nums2.size();
+  if (M == 0 && N == 0) return NAN;
+  int i = 0, j = 0, k = (M + N - 1) / 2;
+  int T = (M + N) & 1 ? 1 : 2;
+  int ans = 0;
+  for (int t = 0; t < T; ++ t) {
+    while (k && i < M && j < N) {
+      int k1 = min(i+(k-1)/2, M-1);
+      int k2 = min(j+(k-1)/2, N-1);
+      if (nums1[k1] >= nums2[k2]) {
+        k -= k2 + 1 - j;
+        j = k2 + 1;
+      } else {
+        k -= k1 + 1 - i;
+        i = k1 + 1;
+      }
+    }
+    if (i == M) {
+      ans += nums2[j+k];
+      j += k + 1;
+      k = 0;
+    } else if (j == N) {
+      ans += nums1[i+k];
+      i += k + 1;
+      k = 0;
+    } else if (nums1[i] >= nums2[j]) { // k == 0
+      ans += nums2[j];
+      ++ j;
     } else {
-      kth -= midB - beginB + 1;
-      beginB = midB + 1;
+      ans += nums1[i];
+      ++ i;
     }
   }
-
-  if ( beginA >= m )
-    return (m + n) & 1 ? B[beginB + kth] : double(B[beginB + kth] + B[beginB + kth + 1]) / 2;
-  if ( beginB >= n )
-    return (m + n) & 1 ? A[beginA + kth] : double(A[beginA + kth] + A[beginA + kth + 1]) / 2;
-
-  // kth == 0
-  if ( (m + n) & 1 ) return min(A[beginA], B[beginB]);
-  int r1 = min(A[beginA], B[beginB]);
-  int r2 = max(A[beginA], B[beginB]);
-  if ( beginA + 1 < m ) r2 = min(r2, A[beginA + 1]);
-  if ( beginB + 1 < n ) r2 = min(r2, B[beginB + 1]);
-  return double(r1 + r2) / 2;
+  return (double) ans / T;
 }
-
