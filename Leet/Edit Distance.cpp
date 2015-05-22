@@ -1,19 +1,18 @@
+// #redo
 int minDistance(string word1, string word2) {
-  const int N = word1.length();
-  const int M = word2.length();
-  int res[M + 1][N + 1];
-  res[0][0] = 0;
-  for (int j = 1; j <= N; j ++) res[0][j] = j;
-  for (int i = 1; i <= M; i ++) res[i][0] = i;
-  for (int i = 1; i <= M; i ++) {
-    for (int j = 1; j <= N; j ++) {
-      res[i][j] = min({
-          res[i-1][j-1] + (word2[i - 1] != word1[j - 1]),
-          res[i-1][j] + 1,
-          res[i][j-1] + 1
+  const int M = word1.size();
+  const int N = word2.size();
+  int ans[2][N+1];
+  for (int j = 0; j <= N; ++ j) ans[0][j] = j;
+  for (int i = 1; i <= M; ++ i) {
+    ans[i&1][0] = i;
+    for (int j = 1; j <= N; ++ j) {
+      ans[i&1][j] = min({
+          1 + ans[i&1][j-1],
+          1 + ans[(i-1)&1][j],
+          word1[i-1] == word2[j-1] ? ans[(i-1)&1][j-1] : ans[(i-1)&1][j-1] + 1
           });
     }
   }
-  return res[M][N];
+  return ans[M&1][N];
 }
-
