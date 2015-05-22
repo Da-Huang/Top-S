@@ -1,18 +1,16 @@
 int lengthOfLongestSubstring(string s) {
-  const int N = s.length();
-  vector<bool> dict(256, false);
-  int i = 0, j = 0;
-  int res = 0;
-  while ( j < N ) {
-    if ( !dict[s[j]] ) {
-      dict[s[j]] = true;
-      j ++;
-      res = max(res, j - i);
-
+  const int N = s.size();
+  bitset<256> has;
+  int i = 0, j = 0, ans = 0;
+  while (j < N) {
+    if (has[s[j]]) {
+      has[s[i]] = false;
+      ++ i;
     } else {
-      dict[s[i]] = false;
-      i ++;
+      has[s[j]] = true;
+      ++ j;
+      ans = max(j - i, ans);
     }
   }
-  return res;
+  return ans;
 }
