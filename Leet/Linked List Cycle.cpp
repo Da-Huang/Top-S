@@ -1,12 +1,12 @@
+// #redo
 bool hasCycle(ListNode *head) {
-  if ( head == NULL ) return false;
-  ListNode *p = head;
-  ListNode *q = head->next;
-  while ( q && q->next ) {
-    if ( p == q ) return true;
+  if (head == NULL || head->next == NULL) return false;
+  ListNode *p = head, *q = head->next;
+  while (q) {
+    if (q == p) return true;
     p = p->next;
-    q = q->next->next;
+    q = q->next;
+    if (q) q = q->next;
   }
   return false;
 }
-
