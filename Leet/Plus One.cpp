@@ -1,21 +1,13 @@
-vector<int> plusOne(vector<int> &digits) {
-  reverse(digits.begin(), digits.end());
-  vector<int> res;
+vector<int> plusOne(vector<int>& digits) {
   const int N = digits.size();
-  if ( N == 0 ) {
-    res.push_back(1);
-    return res;
-  }
-  int i = 0;
+  vector<int> ans;
   int c = 1;
-  while ( i < N ) {
-    int part = digits[i] + c;
-    digits[i] = part % 10;
-    c = part / 10;
-    i ++;
+  for (int i = N - 1; i >= 0; -- i) {
+    int p = digits[i] + c;
+    ans.push_back(p % 10);
+    c = p / 10;
   }
-  if ( c ) digits.push_back(1);
-  reverse(digits.begin(), digits.end());
-  return digits;
+  if (c) ans.push_back(c);
+  reverse(ans.begin(), ans.end());
+  return ans;
 }
-
