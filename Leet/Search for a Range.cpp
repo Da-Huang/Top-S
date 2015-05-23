@@ -1,22 +1,23 @@
-// Redo
-vector<int> searchRange(int A[], int n, int target) {
-  if ( n == 0 ) return {-1, -1};
-  int first = 0, last = n - 1;
-  while ( first < last ) {
-    int mid = (first + last) / 2;
-    if ( A[mid] < target ) first = mid + 1;
-    else last = mid - 1;
-  }
-  int r1 = A[first] >= target ? first : first + 1;
+// #redo
+vector<int> searchRange(vector<int>& nums, int target) {
+  const int N = nums.size();
 
-  if ( r1 >= n || A[r1] != target ) return {-1, -1};
-  first = r1, last = n - 1;
-  while ( first < last ) {
-    int mid = (first + last) / 2;
-    if ( A[mid] <= target ) first = mid + 1;
-    else last = mid - 1;
+  int first = 0, last = N;
+  while (first < last) {
+    int mid = first + (last - first) / 2;
+    if (nums[mid] < target) first = mid + 1;
+    else last = mid;
   }
-  int r2 = A[first] <= target ? first : first - 1;
+  int rl = first;
 
-  return {r1, r2};
+  last = N;
+  while (first < last) {
+    int mid = first + (last - first) / 2;
+    if (nums[mid] <= target) first = mid + 1;
+    else last = mid;
+  }
+  int rr = first;
+
+  if (rl == rr) return {-1, -1};
+  return {rl, rr - 1};
 }
