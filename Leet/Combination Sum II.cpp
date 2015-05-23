@@ -1,24 +1,25 @@
-vector<vector<int>> __combinationSum2(vector<int> &num, int target, int begin=0) {
-  vector<vector<int>> res;
-  const int N = num.size();
-  if ( begin == N ) {
-    if ( target == 0 ) res.push_back(vector<int>());
-    return res;
+// #redo
+void __combinationSum2(vector<int>& candidates, int target, size_t begin, vector<int> &v, vector<vector<int>> &ans) {
+  if (target == 0) {
+    ans.push_back(v);
+    return;
   }
-  int end = begin + 1;
-  while ( end < N && num[end] == num[begin] ) end ++;
-  for (int i = 0; i <= end - begin && num[begin] * i <= target; i ++) {
-    vector<vector<int>> subRes = __combinationSum2(num, target - num[begin] * i, end);
-    for (auto &v : subRes) {
-      v.insert(v.begin(), i, num[begin]);
-      res.push_back(v);
-    }
+  if (begin == candidates.size() || candidates[begin] > target) return;
+
+  size_t end = begin + 1;
+  while (end < candidates.size() && candidates[end] == candidates[begin]) ++ end;
+  __combinationSum2(candidates, target, end, v, ans);
+  for (size_t i = begin; i < end; ++ i) {
+    v.push_back(candidates[begin]);
+    __combinationSum2(candidates, target - (i-begin+1)*candidates[begin], end, v, ans);
   }
-  return res;
+  v.erase(v.end() - end + begin, v.end());
 }
 
-vector<vector<int> > combinationSum2(vector<int> &num, int target) {
-  sort(num.begin(), num.end());
-  return __combinationSum2(num, target);
+vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+  sort(candidates.begin(), candidates.end());
+  vector<vector<int>> ans;
+  vector<int> v;
+  __combinationSum2(candidates, target, 0, v, ans);
+  return ans;
 }
-
