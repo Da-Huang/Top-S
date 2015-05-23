@@ -1,33 +1,32 @@
 ListNode *detectCycle(ListNode *head) {
-  if ( head == NULL || head->next == NULL ) return NULL;
-  ListNode *slow = head, *fast = head->next;
+  if (head == NULL) return NULL;
+  ListNode *p = head, *q = head->next;
+  while (q) {
+    if (p == q) break;
+    p = p->next;
+    q = q->next;
+    if (q) q = q->next;
+  }
+  if (q == NULL) return NULL;
+
   int L = 0;
-  while ( fast && fast->next ) {
-    if ( slow == fast ) break;
-    fast = fast->next->next;
-    slow = slow->next;
-    L ++;
-  }
-  if ( slow != fast ) return NULL;
+  for (p = head; p != q; p = p->next) ++ L;
   int C = 1;
-  ListNode *ptr = fast->next;
-  while ( ptr != fast ) {
-    ptr = ptr->next;
-    C ++;
+  for (p = q->next; p != q; p = p->next) ++ C;
+
+  p = head;
+  while (L > C) {
+    p = p->next;
+    -- L;
   }
-  ListNode *p1 = head;
-  ListNode *p2 = fast;
-  while ( L > C ) {
-    p1 = p1->next;
-    L --;
+  while (L < C) {
+    q = q->next;
+    -- C;
   }
-  while ( C > L ) {
-    p2 = p2->next;
-    C --;
+
+  while (p != q) {
+    p = p->next;
+    q = q->next;
   }
-  while ( p1 != p2 ) {
-    p1 = p1->next;
-    p2 = p2->next;
-  }
-  return p1;
+  return p;
 }
