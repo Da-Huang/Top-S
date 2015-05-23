@@ -1,14 +1,11 @@
-int singleNumber(int A[], int n) {
-  int res = 0;
-  for (int i = 0; i < 32; i ++) {
-    int sum = 0;
-    for (int j = 0; j < n; j ++) {
-      sum += (A[j] >> i) & 1;
+int singleNumber(vector<int>& nums) {
+  int ans = 0;
+  for (int k = 0; k < 32; ++ k) {
+    int count = 0;
+    for (auto n : nums) {
+      count += (n >> k) & 1;
     }
-    if ( sum % 3 ) {
-      res |= 1 << i;
-    }
+    if (count % 3) ans |= 1 << k;
   }
-  return res;
+  return ans;
 }
-
