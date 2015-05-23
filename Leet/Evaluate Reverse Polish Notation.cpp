@@ -1,26 +1,20 @@
-int evalRPN(vector<string> &tokens) {
-  const int N = tokens.size();
-  int stk[N];
-  int stkLen = 0;
-  for (int i = 0; i < N; i ++) {
-    if ( tokens[i] == "+" ) {
-      stkLen --;
-      stk[stkLen - 1] = stk[stkLen - 1] + stk[stkLen];
-
-    } else if ( tokens[i] == "-" ) {
-      stkLen --;
-      stk[stkLen - 1] = stk[stkLen - 1] - stk[stkLen];
-
-    } else if ( tokens[i] == "*" ) {
-      stkLen --;
-      stk[stkLen - 1] = stk[stkLen - 1] * stk[stkLen];
-
-    } else if ( tokens[i] == "/" ) {
-      stkLen --;
-      stk[stkLen - 1] = stk[stkLen - 1] / stk[stkLen];
-
-    } else stk[stkLen ++] = stoi(tokens[i]);
+// #redo
+int evalRPN(vector<string>& tokens) {
+  stack<int> stk;
+  for (string &token : tokens) {
+    if (isdigit(token.back())) stk.push(stoi(token));
+    else {
+      int b = stk.top();
+      stk.pop();
+      int a = stk.top();
+      stk.pop();
+      switch (token.front()) {
+        case '+': stk.push(a + b); break;
+        case '-': stk.push(a - b); break;
+        case '*': stk.push(a * b); break;
+        case '/': stk.push(a / b); break;
+      }
+    }
   }
-  return stk[0];
+  return stk.top();
 }
-
