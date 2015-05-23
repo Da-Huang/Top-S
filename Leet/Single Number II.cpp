@@ -9,3 +9,15 @@ int singleNumber(vector<int>& nums) {
   }
   return ans;
 }
+
+// #redo
+// #version2
+int singleNumber(vector<int>& nums) {
+  int h = 0, l = 0;
+  for (int n : nums) {
+    int tmp = (~h & l & n) | (h & ~l & ~n);
+    l = (~h & ~l & n) | (~h & l & ~n);
+    h = tmp;
+  }
+  return l;
+}
