@@ -1,52 +1,41 @@
-// Redo
-vector<string> fullJustify(vector<string> &words, int L) {
-  const int N = words.size();
-  vector<string> res;
-  int begin = 0;
-  while ( begin < N ) {
-    int width = words[begin].length();
-    int end = begin + 1;
-    while ( end < N && width + words[end].length() + 1 <= L ) {
-      width += words[end].length() + 1;
-      end ++;
-    }
-    if ( end == N ) {
-      // This is the last line
-      string line = words[begin];
-      for (int i = begin + 1; i < end; i ++) {
-        line += " ";
-        line += words[i];
-      }
-      line.resize(L, ' ');
-      res.push_back(line);
-      return res;
-    }
+// #redo
+vector<string> fullJustify(vector<string>& words, int maxWidth) {
+  vector<string> ans;
+  if (words.size() == 0) return ans;
 
-    if ( end == begin + 1 ) {
-      string line = words[begin];
-      line.resize(L, ' ');
-      res.push_back(line);
+  size_t i = 0, size = words[i].size();
+  for (size_t j = 1; j < words.size(); ++ j) {
+    if (size + words[j].size() + 1 <= maxWidth) size += 1 + words[j].size();
+    else {
+      string line = words[i];
+      if (i + 1 == j) {
+        line.resize(maxWidth, ' ');
 
-    } else {
-      int remainSpaces = L - width;
-      int lessSpaces = remainSpaces / (end - begin - 1);
-      int moreSpacesCount = remainSpaces % (end - begin - 1);
-      string line = words[begin];
-      int i = begin + 1;
-      while ( i <= begin + moreSpacesCount ) {
-        line.insert(line.end(), 2 + lessSpaces, ' ');
-        line += words[i];
-        i ++;
+      } else {
+        int outSpaces = maxWidth - size;
+        int spaces = outSpaces / (j - i - 1);
+        int moreSpace = outSpaces % (j - i - 1);
+        int k;
+        for (k = i+1; k <= i+moreSpace; ++ k) {
+          line.insert(line.end(), spaces + 2, ' ');
+          line += words[k];
+        }
+        for (; k < j; ++ k) {
+          line.insert(line.end(), spaces + 1, ' ');
+          line += words[k];
+        }
       }
-      while ( i < end ) {
-        line.insert(line.end(), 1 + lessSpaces, ' ');
-        line += words[i];
-        i ++;
-      }
-      res.push_back(line);
+
+      ans.push_back(line);
+      i = j;
+      size = words[j].size();
     }
-    begin = end;
   }
-  return res;
+  string line = words[i];
+  for (size_t j = i+1; j < words.size(); ++ j) {
+    line += " " + words[j];
+  }
+  line.resize(maxWidth, ' ');
+  ans.push_back(line);
+  return ans;
 }
-
