@@ -1,25 +1,27 @@
-// Redo
-bool isValidSudoku(vector<vector<char> > &board) {
-  for (int i = 0; i < 9; i ++) {
-    for (int j = 0; j < 9; j ++) {
-      if ( board[i][j] == '.' ) continue;
-      for (int ii = i + 1; ii < 9; ii ++) {
-        if ( board[ii][j] != '.' && board[ii][j] == board[i][j] ) return false;
+// #redo
+bool isValidSudoku(vector<vector<char>>& board) {
+  const int N = 9;
+  for (int i = 0; i < N; ++ i) {
+    vector<bool> v1(N, false);
+    vector<bool> v2(N, false);
+    vector<bool> v3(N, false);
+    for (int j = 0; j < N; ++ j) {
+      char c = board[i][j];
+      if (c != '.') {
+        if (v1[c - '0']) return false;
+        v1[c - '0'] = true;
       }
-      for (int jj = j + 1; jj < 9; jj ++) {
-        if ( board[i][jj] != '.' && board[i][jj] == board[i][j] ) return false;
+      c = board[j][i];
+      if (c != '.') {
+        if (v2[c - '0']) return false;
+        v2[c - '0'] = true;
       }
-      int blocki = i / 3, blockj = j / 3;
-      for (int ii = 0; ii < 3; ii ++) {
-        for (int jj = 0; jj < 3; jj ++) {
-          if ( board[blocki * 3 + ii][blockj * 3 + jj] == '.' ) continue;
-          if ( blocki * 3 + ii != i || blockj * 3 + jj != j ) {
-            if ( board[blocki * 3 + ii][blockj * 3 + jj] == board[i][j] ) return false;
-          }
-        }
+      c = board[i/3*3+j/3][i%3*3+j%3];
+      if (c != '.') {
+        if (v3[c - '0']) return false;
+        v3[c - '0'] = true;
       }
     }
   }
   return true;
 }
-
