@@ -1,25 +1,19 @@
-vector<vector<int>> __subsets(vector<int> &S, int begin) {
-  const int N = S.size();
-  vector<vector<int>> res;
-  if ( begin == N ) {
-    res.push_back(vector<int>());
-    return res;
+void __subsets(vector<int> &nums, int begin, vector<int> &v, vector<vector<int>> &ans) {
+  if (begin == (int) nums.size()) {
+    ans.push_back(v);
+    return;
   }
-  int end = begin + 1;
-  while ( end < N && S[end] == S[begin] ) end ++;
 
-  vector<vector<int>> subRes = __subsets(S, end);
-  for (int i = 0; i <= end - begin; i ++) {
-    for (auto &v : subRes) {
-      res.push_back(v);
-      res.back().insert(res.back().begin(), i, S[begin]);
-    }
-  }
-  return res;
+  __subsets(nums, begin+1, v, ans);
+  v.push_back(nums[begin]);
+  __subsets(nums, begin+1, v, ans);
+  v.pop_back();
 }
 
-vector<vector<int> > subsets(vector<int> &S) {
-  sort(S.begin(), S.end());
-  return __subsets(S, 0);
+vector<vector<int>> subsets(vector<int>& nums) {
+  sort(nums.begin(), nums.end());
+  vector<vector<int>> ans;
+  vector<int> v;
+  __subsets(nums, 0, v, ans);
+  return ans;
 }
-
