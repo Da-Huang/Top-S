@@ -1,10 +1,7 @@
-int removeElement(int A[], int n, int elem) {
-  int len = 0, i = 0;
-  while ( i < n ) {
-    if ( A[i] != elem )
-      A[len ++] = A[i];
-    i ++;
+int removeElement(vector<int>& nums, int val) {
+  size_t i = 0, j = 0;
+  for (size_t i = 0; i < nums.size(); ++ i) {
+    if (nums[i] != val) nums[j ++] = nums[i];
   }
-  return len;
+  return j;
 }
-
