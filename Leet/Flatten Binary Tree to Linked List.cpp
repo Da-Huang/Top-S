@@ -1,13 +1,13 @@
-void flatten(TreeNode *root) {
-  while ( root ) {
-    if ( root->left ) {
-      TreeNode *tail = root->left;
-      while ( tail->right ) tail = tail->right;
-      tail->right = root->right;
-      root->right = root->left;
+void flatten(TreeNode* root) {
+  while (root) {
+    TreeNode *l = root->left;
+    if (l) {
+      TreeNode *ltail = l;
+      while (ltail->right) ltail = ltail->right;
+      ltail->right = root->right;
+      root->right = l;
       root->left = NULL;
     }
     root = root->right;
   }
 }
-
