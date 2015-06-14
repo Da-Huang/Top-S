@@ -88,3 +88,6 @@ vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
   }
   return ans;
 }
+
+
+// #solution3 #divide-and-conquer
