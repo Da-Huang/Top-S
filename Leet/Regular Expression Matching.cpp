@@ -1,31 +1,13 @@
-bool isMatch(const char *s, const char *p) {
-  const int N = strlen(s);
-  const int M = strlen(p);
-  unordered_set<int> res[M + 1];
-  res[0].insert(0);
-  int i = 0;
-  while ( i < M ) {
-    if ( i + 1 < M && p[i + 1] == '*' ) {
-      for (auto &j : res[i]) {
-        res[i + 2].insert(j);
-        for (int k = j; k < N; k ++) {
-          if ( p[i] == '.' || p[i] == s[k] ) {
-            res[i + 2].insert(k + 1);
-
-          } else break;
-        }
-      }
-      i += 2;
-
-    } else {
-      for (auto &j : res[i]) {
-        if ( p[i] == '.' || p[i] == s[j] ) {
-          res[i + 1].insert(j + 1);
-        }
-      }
-      i ++;
+// #redo
+bool isMatch(string s, string p) {
+  vector<vector<bool>> ans(s.size()+1, vector<bool>(p.size()+1));
+  ans[0][0] = true;
+  for (size_t i = 1; i <= s.size(); ++ i) ans[i][0] = false;
+  for (size_t i = 0; i <= s.size(); ++ i) {
+    for (size_t j = 1; j <= p.size(); ++ j) {
+      if (p[j-1] == '*') ans[i][j] = ans[i][j-2] || (i > 0 && ans[i-1][j] && (p[j-2] == '.' || s[i-1] == p[j-2]));
+      else ans[i][j] = i > 0 && ans[i-1][j-1] && (p[j-1] == '.' || s[i-1] == p[j-1]);
     }
   }
-  return res[M].find(N) != res[M].end();
+  return ans[s.size()][p.size()];
 }
-
