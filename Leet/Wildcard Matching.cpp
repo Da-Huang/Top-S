@@ -34,6 +34,7 @@ bool isMatch(const char *s, const char *p) {
 
 
 // #version2
+// the definition of equal may bring some troubles to '\0'
 bool isMatch(string s, string p) {
   auto equalMatch = [](char a, char b) {
     return a == '?' || b == '?' || a == b;
