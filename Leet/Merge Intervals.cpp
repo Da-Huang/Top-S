@@ -1,4 +1,4 @@
-// Redo
+// #redo
 vector<Interval> merge(vector<Interval>& intervals) {
   sort(intervals.begin(), intervals.end(), [] (const Interval &i1, const Interval &i2) {
       return i1.start < i2.start;
