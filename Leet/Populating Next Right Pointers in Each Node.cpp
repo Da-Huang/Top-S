@@ -1,21 +1,20 @@
 void connect(TreeLinkNode *root) {
-  TreeLinkNode *head = root;
-  while ( head ) {
-    TreeLinkNode HEAD(0);
+  TreeLinkNode HEAD(0);
+  HEAD.next = root;
+  while (HEAD.next) {
+    TreeLinkNode *head = HEAD.next;
+    HEAD.next = NULL;
     TreeLinkNode *tail = &HEAD;
-    TreeLinkNode *ptr = head;
-    while ( ptr ) {
-      if ( ptr->left ) {
-        tail->next = ptr->left;
-        tail = ptr->left;
+    while (head) {
+      if (head->left) {
+        tail->next = head->left;
+        tail = head->left;
       }
-      if ( ptr->right ) {
-        tail->next = ptr->right;
-        tail = ptr->right;
+      if (head->right) {
+        tail->next = head->right;
+        tail = head->right;
       }
-      ptr = ptr->next;
+      head = head->next;
     }
-    head = HEAD.next;
   }
 }
-
