@@ -1,31 +1,22 @@
-vector<vector<int>> twoSum(vector<int> &num, int first, int last, int target) {
-  vector<vector<int>> res;
-  while ( first < last ) {
-    if ( num[first] + num[last] > target ) last --;
-    else if ( num[first] + num[last] < target ) first ++;
-    else {
-      res.push_back({num[first], num[last]});
-      int oldFirst = first ++;
-      while ( first < last && num[first] == num[oldFirst] ) first ++;
-    }
-  }
-  return res;
-}
-
-vector<vector<int> > threeSum(vector<int> &num) {
-  vector<vector<int>> res;
-  sort(num.begin(), num.end());
-  const int N = num.size();
+vector<vector<int>> threeSum(vector<int>& nums) {
+  vector<vector<int>> ans;
+  sort(nums.begin(), nums.end());
+  const int N = nums.size();
   int begin = 0;
-  while ( begin < N ) {
-    vector<vector<int>> subRes = twoSum(num, begin + 1, N - 1, -num[begin]);
-    for (auto &item : subRes) {
-      item.insert(item.begin(), num[begin]);
-      res.push_back(item);
+  while (begin < N) {
+    int end = begin + 1;
+    while (end < N && nums[end] == nums[begin]) ++ end;
+    int first = begin + 1, last = N - 1;
+    while (first < last) {
+      if (nums[first] + nums[last] + nums[begin] > 0) -- last;
+      else if (nums[first] + nums[last] + nums[begin] < 0) ++ first;
+      else {
+        ans.push_back({nums[begin], nums[first], nums[last]});
+        ++ first;
+        while (first < last && nums[first] == nums[first-1]) ++ first;
+      }
     }
-    int oldBegin = begin ++;
-    while ( begin < N && num[begin] == num[oldBegin] ) begin ++;
+    begin = end;
   }
-  return res;
+  return ans;
 }
-
