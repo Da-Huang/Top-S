@@ -1,13 +1,12 @@
-// Redo
-ListNode *reverseBetween(ListNode *head, int m, int n) {
+// #redo
+ListNode* reverseBetween(ListNode* head, int m, int n) {
   ListNode HEAD(0);
   HEAD.next = head;
   ListNode *ptr = &HEAD;
-  for (int i = 1; i < m; i ++) {
-    ptr = ptr->next;
-  }
+  for (int i = 1; i < m && ptr->next; ++ i) ptr = ptr->next;
   ListNode *tail = ptr->next;
-  for (int i = m; i < n; i ++) {
+  if (tail == NULL) return head;
+  for (int i = m; i < n && tail->next; ++ i) {
     ListNode *node = tail->next;
     tail->next = node->next;
     node->next = ptr->next;
@@ -15,4 +14,3 @@ ListNode *reverseBetween(ListNode *head, int m, int n) {
   }
   return HEAD.next;
 }
-
