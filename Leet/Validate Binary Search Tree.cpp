@@ -1,33 +1,26 @@
-// Solution 1
-bool isValidBST(TreeNode *root) {
-  stack<TreeNode*> nodeStack;
-  while ( root ) {
-    nodeStack.push(root);
-    root = root->left;
-  }
-  TreeNode *last = NULL;
-
-  while ( !nodeStack.empty() ) {
-    TreeNode *node = nodeStack.top();
-    nodeStack.pop();
-    // visit node
-    if ( last != NULL ) {
-      if ( last->val >= node->val ) return false;
+// #redo
+bool isValidBST(TreeNode* root) {
+  stack<TreeNode*> stk;
+  TreeNode *last = root;
+  TreeNode *pre = NULL;
+  while (last || !stk.empty()) {
+    while (last) {
+      stk.push(last);
+      last = last->left;
     }
-    last = node;
+    TreeNode *node = stk.top();
+    stk.pop();
 
-    if ( node->right ) {
-      node = node->right;
-      while ( node ) {
-        nodeStack.push(node);
-        node = node->left;
-      }
-    }
+    if (pre && pre->val >= node->val) return false;
+    pre = node;
+
+    last = node->right;
   }
   return true;
 }
 
-// Solution 2
+
+// #solution 2
 bool isValidBST(TreeNode *root) {
   TreeNode *last = NULL;
   TreeNode *ptr = root;
