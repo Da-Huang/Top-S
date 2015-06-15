@@ -1,29 +1,26 @@
-void recoverTree(TreeNode *root) {
-  TreeNode *p1 = NULL, *p2 = NULL;
-  TreeNode *last = NULL;
-  TreeNode *ptr = root;
-  while ( ptr ) {
-    if ( ptr->left ) {
-      TreeNode *q = ptr->left;
-      while ( q->right && q->right != ptr ) q = q->right;
-      if ( q->right == NULL ) {
-        q->right = ptr;
-        ptr = ptr->left;
+void recoverTree(TreeNode* root) {
+  TreeNode *last = NULL, *p = NULL, *q;
+  while (root) {
+    TreeNode *lr = root->left;
+    if (lr) {
+      while (lr->right && lr->right != root) lr = lr->right;
+      if (lr->right == NULL) {
+        lr->right = root;
+        root = root->left;
         continue;
       }
-      // q->right == ptr
-      q->right = NULL;
+      lr->right = NULL;
     }
-    // deal with ptr;
-    if ( last && last->val > ptr->val ) {
-      if ( p1 ) p2 = ptr;
-      else {
-        p1 = last;
-        p2 = ptr;
+    if (last && last->val > root->val) {
+      if (p == NULL) {
+        p = last;
+        q = root;
+      } else {
+        q = root;
       }
     }
-    last = ptr;
-    ptr = ptr->right;
+    last = root;
+    root = root->right;
   }
-  swap(p1->val, p2->val);
+  swap(p->val, q->val);
 }
