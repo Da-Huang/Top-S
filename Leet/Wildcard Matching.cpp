@@ -48,12 +48,12 @@ bool isMatch(string s, string p) {
       if (pi < 0) continue;
       pj = i;
       if (pi == 0) {
-        if (s.size() >= pj && equal(p.begin(), p.begin()+pj, s.begin(), equalMatch)) {
+        if (NS >= pj && equal(p.begin(), p.begin()+pj, s.begin(), equalMatch)) {
           si = pj - pi;
           if (pj == NP) return si == NS;
         } else return false;
       } else if (pj == NP) {
-        return find_end(s.begin()+si, s.end(), p.begin()+pi, p.end(), equalMatch)+pj-pi == s.end();
+        return NS - si >= pj - pi && equal(p.begin()+pi, p.end(), s.end()-pj+pi, equalMatch);
       } else {
         auto it = search(s.begin()+si, s.end(), p.begin()+pi, p.begin()+pj, equalMatch);
         if (it == s.end()) return false;
@@ -68,4 +68,3 @@ bool isMatch(string s, string p) {
   if (p.empty() && !s.empty()) return false;
   return true;
 }
-
