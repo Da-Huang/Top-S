@@ -1,24 +1,25 @@
-vector<vector<int>> combinationSumInner(vector<int> &candidates, int target, int start=0) {
-  vector<vector<int>> res;
-  const int N = candidates.size();
-  if ( start == N ) {
-    if ( target == 0 ) {
-      res.push_back(vector<int>());
-    }
-    return res;
+void __combinationSum(vector<int> &candidates, int target, int begin, vector<int> &v, vector<vector<int>> &ans) {
+  if (target == 0) {
+    ans.push_back(v);
+    return;
   }
+  if (begin == candidates.size()) return;
 
-  for (int i = 0; i * candidates[start] <= target; i ++) {
-    vector<vector<int>> subRes = combinationSumInner(candidates, target - i * candidates[start], start + 1);
-    for (auto &item : subRes) {
-      item.insert(item.begin(), i, candidates[start]);
-      res.push_back(item);
-    }
+  __combinationSum(candidates, target, begin+1, v, ans);
+  int sum = candidates[begin];
+  int size = v.size();
+  while (sum <= target) {
+    v.push_back(candidates[begin]);
+    __combinationSum(candidates, target-sum, begin+1, v, ans);
+    sum += candidates[begin];
   }
-  return res;
+  v.resize(size);
 }
 
-vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+  vector<vector<int>> ans;
+  vector<int> v;
   sort(candidates.begin(), candidates.end());
-  return combinationSumInner(candidates, target);
+  __combinationSum(candidates, target, 0, v, ans);
+  return ans;
 }
