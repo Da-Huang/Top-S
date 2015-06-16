@@ -58,36 +58,33 @@ vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
 // #version2
 vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
   vector<pair<int, int>> ans;
-  vector<pair<size_t, int>> v;
+  vector<pair<size_t, int>> hs;
   for (size_t i = 0; i < buildings.size(); ++ i) {
-    v.push_back(make_pair(i, 0));
-    v.push_back(make_pair(i, 1));
+    hs.push_back(make_pair(i, 0));
+    hs.push_back(make_pair(i, 1));
   }
-  sort(v.begin(), v.end(), [&buildings] (const pair<size_t, int> &p1, const pair<size_t, int> &p2) {
-    if (buildings[p1.first][p1.second] < buildings[p2.first][p2.second]) return true;
-    if (buildings[p1.first][p1.second] > buildings[p2.first][p2.second]) return false;
-    return p1.second < p2.second;
+  sort(hs.begin(), hs.end(), [&buildings](const pair<size_t, int> &p1, const pair<size_t, int> &p2) {
+    return buildings[p1.first][p1.second] < buildings[p2.first][p2.second];
   });
-
-  multiset<int> heights;
+  map<int, int> heightCounts;
   size_t begin = 0;
-  int lastHeight = 0;
-  while (begin < v.size()) {
+  int y = 0;
+  while (begin < hs.size()) {
     size_t end = begin;
-    int x = buildings[v[begin].first][v[begin].second];
-    while (end < v.size() && buildings[v[end].first][v[end].second] == x) {
-      int height = buildings[v[end].first][2];
-      if (v[end].second == 0) heights.insert(height);
-      else heights.erase(heights.find(height));
+    int x = buildings[hs[begin].first][hs[begin].second];
+    while (end < hs.size() && x == buildings[hs[end].first][hs[end].second]) {
+      int h = buildings[hs[end].first][2];
+      if (hs[end].second == 0) ++ heightCounts[h];
+      else -- heightCounts[h];
+      if (heightCounts[h] == 0) heightCounts.erase(h);
       ++ end;
     }
-    int height = heights.empty() ? 0 : *(-- heights.end());
-    if (lastHeight != height) ans.push_back(make_pair(x, height));
-    lastHeight = height;
+    int y2 = heightCounts.empty() ? 0 : (-- heightCounts.end())->first;
+    if (y != y2) {
+      y = y2;
+      ans.push_back(make_pair(x, y));
+    }
     begin = end;
   }
   return ans;
 }
-
-
-// #solution3 #divide-and-conquer
