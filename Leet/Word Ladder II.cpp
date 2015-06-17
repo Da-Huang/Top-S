@@ -1,54 +1,51 @@
-// Redo
-vector<vector<string>> getPaths(const string &start, const string &end, unordered_map<string, int> &path) {
-  vector<vector<string>> res;
-  if ( start == end ) {
-    res.push_back(vector<string>(1, start));
-    return res;
+// #redo
+void __buildPath(unordered_map<string, int> &dis, vector<string> &v, vector<vector<string>> &ans) {
+  int curDis = dis[v.back()];
+  if (curDis == 0) {
+    ans.push_back(v);
+    return;
   }
-
-  const int N = end.length();
-  for (int i = 0; i < N; i ++) {
-    string prev = end;
-    for (char c = 'a'; c <= 'z'; c ++) {
-      if ( c != end[i] ) {
-        prev[i] = c;
-        auto it = path.find(prev);
-        if ( it != path.end() && it->second == path[end] - 1 ) {
-          vector<vector<string>> subRes = getPaths(start, prev, path);
-          for (auto &item : subRes) {
-            item.push_back(end);
-            res.push_back(item);
-          }
-        }
+  v.push_back(v.back());
+  for (size_t i = 0; i < v.back().size(); ++ i) {
+    char ci = v.back()[i];
+    for (v.back()[i] = 'a'; v.back()[i] <= 'z'; ++ v.back()[i]) {
+      if (dis.find(v.back()) != dis.end() && dis[v.back()] == curDis - 1) {
+        __buildPath(dis, v, ans);
       }
     }
+    v.back()[i] = ci;
   }
-  return res;
+  v.pop_back();
 }
 
 vector<vector<string>> findLadders(string start, string end, unordered_set<string> &dict) {
-  const int N = start.length();
-  unordered_map<string, int> path;
-  path[start] = 0;
-  queue<string> q;
-  q.push(start);
-  while ( !q.empty() ) {
-    string str = q.front();
-    q.pop();
-    if ( str == end ) break;
-    for (int i = 0; i < N; i ++) {
-      string newStr = str;
-      for (char c = 'a'; c <= 'z'; c ++) {
-        if ( c != str[i] ) {
-          newStr[i] = c;
-          if ( dict.find(newStr) != dict.end() && path.find(newStr) == path.end() ) {
-            path[newStr] = path[str] + 1;
-            q.push(newStr);
-          }
+  unordered_map<string, int> dis;
+  queue<string> que;
+  que.push(start);
+  dis[start] = 0;
+  while (!que.empty()) {
+    string word = que.front();
+    que.pop();
+    int curDis = dis[word];
+    if (word == end) break;
+    for (size_t i = 0; i < word.size(); ++ i) {
+      char ci = word[i];
+      for (word[i] = 'a'; word[i] <= 'z'; ++ word[i]) {
+        if (dict.find(word) != dict.end() && dis.find(word) == dis.end()) {
+          que.push(word);
+          dis[word] = curDis + 1;
         }
       }
+      word[i] = ci;
     }
   }
-  return getPaths(start, end, path);
+  vector<vector<string>> ans;
+  vector<string> v;
+  if (dis.find(end) == dis.end()) return ans;
+  v.push_back(end);
+  __buildPath(dis, v, ans);
+  for (auto &v : ans) {
+    reverse(v.begin(), v.end());
+  }
+  return ans;
 }
-
