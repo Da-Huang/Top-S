@@ -1,36 +1,31 @@
-bool isNumber(const char *s) {
-  int N = strlen(s);
-  int first = 0;
-  while ( N > 0 && s[N - 1] == ' ' ) N --;
-  while ( first < N && s[first] == ' ' ) first ++;
-  if ( first < N && (s[first] == '+' || s[first] == '-') ) first ++;
-
-  bool hasNumber = false;
-  while ( first < N && isdigit(s[first]) ) {
-    first ++;
-    hasNumber = true;
+bool isNumber(string s) {
+  int N = s.size();
+  while (N > 0 && s[N-1] == ' ') -- N;
+  int i = 0;
+  while (i < N && s[i] == ' ') ++ i;
+  if (i == N) return false;
+  if (s[i] == '+' || s[i] == '-') ++ i;
+  bool hasDigit = false;
+  while (i < N && isdigit(s[i])) {
+    hasDigit = true;
+    ++ i;
   }
-  if ( first == N ) return hasNumber;
-
-  if ( s[first] == '.' ) {
-    first ++;
-    while ( first < N && isdigit(s[first]) ) {
-      first ++;
-      hasNumber = true;
+  if (i < N && s[i] == '.') {
+    ++ i;
+    while (i < N && isdigit(s[i])) {
+      hasDigit = true;
+      ++ i;
     }
   }
-  if ( !hasNumber ) return false;
-  if ( first == N ) return true;
-
-  if ( tolower(s[first]) != 'e' ) return false;
-  first ++;
-
-  if ( first < N && (s[first] == '+' || s[first] == '-') ) first ++;
-  hasNumber = false;
-  while ( first < N && isdigit(s[first]) ) {
-    first ++;
-    hasNumber = true;
+  if (!hasDigit) return false;
+  if (i == N) return true;
+  if (s[i] != 'e' && s[i] != 'E') return false;
+  ++ i;
+  if (i < N && (s[i] == '+' || s[i] == '-')) ++ i;
+  hasDigit = false;
+  while (i < N && isdigit(s[i])) {
+    hasDigit = true;
+    ++ i;
   }
-  return first == N && hasNumber;
+  return i == N && hasDigit;
 }
-
