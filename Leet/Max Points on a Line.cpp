@@ -1,36 +1,36 @@
-// Redo
-int maxPoints(vector<Point> &points) {
+// #redo
+int maxPoints(vector<Point>& points) {
   const int N = points.size();
-  int res = 0;
-  auto lessP = [] (const Point &p1, const Point &p2) {
-    if ( p1.x != p2.x ) return p1.x < p2.x;
+  int ans = 0;
+  auto lessp = [](const Point &p1, const Point &p2) {
+    if (p1.x < p2.x) return true;
+    if (p1.x > p2.x) return false;
     return p1.y < p2.y;
   };
-  sort(points.begin(), points.end(), lessP);
-  auto lessK = [] (const Point &p1, const Point &p2) {
-    return p1.y * p2.x < p2.y * p1.x;
-  };
-  int begin = 0;
-  while ( begin < N ) {
-    int end = begin + 1;
-    while ( end < N && !lessP(points[begin], points[end]) ) end ++;
-    vector<Point> K;
-    for (int j = end; j < N; j ++) {
-      const int deltaX = points[begin].x - points[j].x;
-      const int deltaY = points[begin].y - points[j].y;
-      K.push_back(Point(deltaX, deltaY));
-    }
-    res = max(res, end - begin);
-    sort(K.begin(), K.end(), lessK);
-    int beginK = 0;
-    while ( beginK < (int) K.size() ) {
-      int endK = beginK + 1;
-      while ( endK < (int) K.size() && !lessK(K[beginK], K[endK]) ) endK ++;
-      res = max(res, endK - beginK + end - begin);
-      beginK = endK;
-    }
+  sort(points.begin(), points.end(), lessp);
 
+  auto lessk = [](const Point &k1, const Point &k2) {
+    return k1.y * k2.x < k2.y * k1.x;
+  };
+
+  int begin = 0;
+  while (begin < N) {
+    int end = begin + 1;
+    while (end < N && !lessp(points[begin], points[end])) ++ end;
+    ans = max(ans, end - begin);
+    vector<Point> ks;
+    for (int j = end; j < N; ++ j)
+      ks.push_back(Point(points[j].x - points[begin].x, points[j].y - points[begin].y));
+    sort(ks.begin(), ks.end(), lessk);
+    size_t kbegin = 0;
+    while (kbegin < ks.size()) {
+      size_t kend = kbegin + 1;
+      while (kend < ks.size() && !lessk(ks[kbegin], ks[kend])) ++ kend;
+      ans = max(ans, end - begin + (int) (kend - kbegin));
+      kbegin = kend;
+    }
     begin = end;
   }
-  return res;
+
+  return ans;
 }
