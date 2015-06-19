@@ -1,33 +1,26 @@
-// Solution 1
-vector<int> postorderTraversal(TreeNode *root) {
-  vector<int> res;
-  stack<TreeNode*> nodeStack;
+// #redo
+vector<int> postorderTraversal(TreeNode* root) {
+  vector<int> ans;
+  TreeNode *rl = root;
+  stack<TreeNode*> stk;
   TreeNode *last = NULL;
-  TreeNode *ptr = root;
-  while ( ptr ) {
-    nodeStack.push(ptr);
-    ptr = ptr->left;
-  }
-  while ( !nodeStack.empty() ) {
-    TreeNode *node = nodeStack.top();
-    nodeStack.pop();
-    if ( node->right == last || node->right == NULL ) {
-      res.push_back(node->val);
-      last = node;
-
-    } else {
-      nodeStack.push(node);
-      node = node->right;
-      while ( node ) {
-        nodeStack.push(node);
-        node = node->left;
-      }
+  while (rl || !stk.empty()) {
+    while (rl) {
+      stk.push(rl);
+      rl = rl->left;
     }
+    TreeNode *node = stk.top();
+    if (node->right == NULL || node->right == last) {
+      stk.pop();
+      ans.push_back(node->val);
+      last = node;
+    } else rl = node->right;
   }
-  return res;
+  return ans;
 }
 
-// Solution 2
+
+// #solution2
 vector<int> postorderTraversal(TreeNode *root) {
   vector<int> res;
   TreeNode ROOT(0);
