@@ -34,3 +34,36 @@ int maxPoints(vector<Point>& points) {
 
   return ans;
 }
+
+
+// #version2
+int maxPoints(vector<Point>& points) {
+  const int N = points.size();
+  int ans = 0;
+  auto lessp = [](const Point &p1, const Point &p2) {
+    if (p1.x < p2.x) return true;
+    if (p1.x > p2.x) return false;
+    return p1.y < p2.y;
+  };
+  sort(points.begin(), points.end(), lessp);
+
+  int begin = 0;
+  while (begin < N) {
+    int end = begin + 1;
+    while (end < N && !lessp(points[begin], points[end])) ++ end;
+    ans = max(ans, end - begin);
+    unordered_map<double, int> ks;
+    for (int j = end; j < N; ++ j) {
+      double xdelta = points[j].x - points[begin].x;
+      double ydelta = points[j].y - points[begin].y;
+      if (xdelta == 0) ++ ks[(double) INT_MAX + 1];
+      else ++ ks[ydelta / xdelta];
+    }
+    for (auto &p : ks) {
+      ans = max(ans, p.second + end - begin);
+    }
+    begin = end;
+  }
+
+  return ans;
+}
