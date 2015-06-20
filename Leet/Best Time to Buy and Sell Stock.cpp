@@ -10,3 +10,13 @@ int maxProfit(vector<int> &prices) {
   return res;
 }
 
+
+// #version2
+int maxProfit(vector<int>& prices) {
+  int hold = INT_MIN, sell = 0;
+  for (int price : prices) {
+    hold = max(hold, -price);
+    sell = max(sell, hold + price);
+  }
+  return sell;
+}
