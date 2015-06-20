@@ -1,26 +1,25 @@
-// Redo
-int candy(vector<int> &ratings) {
+// #redo
+int candy(vector<int>& ratings) {
   const int N = ratings.size();
-  if ( N == 0 ) return 0;
-  int res = 0;
+  int ans = 0;
   int begin = 0;
-  int startBefore = 0;
-  while ( begin < N ) {
-    int end = begin + 1;
-    while ( end < N && ratings[end] > ratings[end - 1] ) end ++;
-    int incTop = end - begin + startBefore;
-    begin = end - 1;
-    while ( end < N && ratings[end] < ratings[end - 1] ) end ++;
-    int decTop = end - begin;
-    res += incTop * (incTop - 1) / 2 + decTop * (decTop - 1) / 2 - startBefore;
-    res += max(incTop, decTop);
-    begin = end;
+  while (begin < N) {
+    int p = begin;
+    while (p + 1 < N && ratings[p + 1] > ratings[p]) ++ p;
+    int v = p;
+    while (v + 1 < N && ratings[v + 1] < ratings[v]) ++ v;
 
-    if ( begin < N && ratings[begin] == ratings[begin - 1] ) startBefore = 0;
-    else startBefore = 1;
+    int dmax = max(p - begin, v - p);
+    int dmin = min(p - begin, v - p);
+    ans += (dmax + 1) * dmax / 2;
+    ans += dmax + 1;
+    ans += (dmin + 1) * dmin / 2;
 
-    if ( end >= N ) break;
+    if (v == p || v == N - 1) begin = v + 1;
+    else {
+      begin = v;
+      -- ans;
+    }
   }
-  return res;
+  return ans;
 }
-
