@@ -1,15 +1,14 @@
-bool wordBreak(string s, unordered_set<string> &dict) {
-  const int N = s.length();
-  vector<bool> res(N + 1, false);
-  res[0] = true;
-  for (int i = 1; i <= N; i ++) {
-    for (int j = 0; j < i; j ++) {
-      if ( res[j] && dict.find(s.substr(j, i - j)) != dict.end() ) {
-        res[i] = true;
+bool wordBreak(string s, unordered_set<string>& wordDict) {
+  const int N = s.size();
+  vector<bool> able(N + 1, false);
+  able[0] = true;
+  for (int i = 1; i <= N; ++ i) {
+    for (int j = 0; j < i; ++ j) {
+      if (able[j] && wordDict.find(s.substr(j, i - j)) != wordDict.end()) {
+        able[i] = true;
         break;
       }
     }
   }
-  return res[N];
+  return able[N];
 }
-
