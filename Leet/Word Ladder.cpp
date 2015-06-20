@@ -1,24 +1,25 @@
-int ladderLength(string start, string end, unordered_set<string> &dict) {
+// #redo
+int ladderLength(string beginWord, string endWord, unordered_set<string>& wordDict) {
   unordered_map<string, int> path;
-  const int N = start.length();
-  path[start] = 0;
-  queue<string> q;
-  q.push(start);
-  while ( !q.empty() ) {
-    string cur = q.front();
-    q.pop();
-    if ( cur == end ) return path[cur] + 1;
-
-    for (int i = 0; i < N; i ++) {
-      string next = cur;
-      for (next[i] = 'a'; next[i] <= 'z'; next[i] ++) {
-        if ( next[i] != cur[i] && dict.find(next) != dict.end() && path.find(next) == path.end() ) {
-          path[next] = path[cur] + 1;
-          q.push(next);
+  queue<string> que;
+  path[beginWord] = 1;
+  que.push(beginWord);
+  while (!que.empty()) {
+    string word = que.front();
+    que.pop();
+    int len = path[word];
+    if (word == endWord) break;
+    for (size_t i = 0; i < word.size(); ++ i) {
+      char ci = word[i];
+      for (char c = 'a'; c <= 'z'; ++ c) {
+        word[i] = c;
+        if (wordDict.find(word) != wordDict.end() && path.find(word) == path.end()) {
+          path[word] = len + 1;
+          que.push(word);
         }
       }
+      word[i] = ci;
     }
   }
-  return 0;
+  return path[endWord];
 }
-
