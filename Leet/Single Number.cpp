@@ -1,6 +1,5 @@
-int singleNumber(int A[], int n) {
-  int res = 0;
-  for (int i = 0; i < n; i ++) res ^= A[i];
-  return res;
+int singleNumber(vector<int>& nums) {
+  int ans = 0;
+  for (int num : nums) ans ^= num;
+  return ans;
 }
-
