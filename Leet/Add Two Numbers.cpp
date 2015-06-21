@@ -1,34 +1,30 @@
-ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-  ListNode res(0);
-  ListNode *tail = &res;
+// #redo
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
   int c = 0;
-  while ( l1 && l2 ) {
-    int v = l1->val + l2->val + c;
-    tail->next = new ListNode(v % 10);
+  ListNode HEAD(0);
+  ListNode *tail = &HEAD;
+  while (l1 && l2) {
+    int p = l1->val + l2->val + c;
+    tail->next = new ListNode(p % 10);
     tail = tail->next;
-    c = v / 10;
+    c = p / 10;
     l1 = l1->next;
     l2 = l2->next;
   }
-  while ( l1 ) {
-    int v = l1->val + c;
-    tail->next = new ListNode(v % 10);
+  while (l1) {
+    int p = l1->val + c;
+    tail->next = new ListNode(p % 10);
     tail = tail->next;
-    c = v / 10;
+    c = p / 10;
     l1 = l1->next;
   }
-  while ( l2 ) {
-    int v = l2->val + c;
-    tail->next = new ListNode(v % 10);
+  while (l2) {
+    int p = l2->val + c;
+    tail->next = new ListNode(p % 10);
     tail = tail->next;
-    c = v / 10;
+    c = p / 10;
     l2 = l2->next;
   }
-  if ( c ) {
-    tail->next = new ListNode(c);
-    tail = tail->next;
-  }
-  return res.next;
+  if (c) tail->next = new ListNode(c);
+  return HEAD.next;
 }
-
-
