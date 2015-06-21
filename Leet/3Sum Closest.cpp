@@ -1,29 +1,24 @@
-int __twoSumClosest(vector<int> &num, int first, int target) {
-  int last = (int) num.size() - 1;
-  int res = num[first] + num[last];
-  while ( first < last ) {
-    int subRes = num[first] + num[last];
-    if ( abs(target - res) > abs(target - subRes) ) {
-      res = subRes;
-    }
-    if ( num[first] + num[last] > target ) last --;
-    else if ( num[first] + num[last] < target ) first ++;
-    else return target;
-  }
-  return res;
-}
-
-int threeSumClosest(vector<int> &num, int target) {
-  sort(num.begin(), num.end());
-  const int N = num.size();
+// #redo
+int threeSumClosest(vector<int>& nums, int target) {
+  sort(nums.begin(), nums.end());
+  const int N = nums.size();
   assert(N >= 3);
-  int res = num[0] + __twoSumClosest(num, 1, target - num[0]);
-  for (int i = 1; i + 2 < N; i ++) {
-    int subRes = num[i] + __twoSumClosest(num, i + 1, target - num[i]);
-    if ( abs(target - res) > abs(target - subRes) ) {
-      res = subRes;
+  int ans = nums[0] + nums[1] + nums[2];
+  for (int k = 0; k + 2 < N; ++ k) {
+    int i = k + 1, j = N - 1;
+    while (i < j) {
+      if (nums[k] + nums[i] + nums[j] > target) {
+        if (abs(ans - target) > nums[k] + nums[i] + nums[j] - target) {
+          ans = nums[k] + nums[i] + nums[j];
+        }
+        -- j;
+      } else if (nums[k] + nums[i] + nums[j] < target) {
+        if (abs(ans - target) > target - nums[k] - nums[i] - nums[j]) {
+          ans = nums[k] + nums[i] + nums[j];
+        }
+        ++ i;
+      } else return target;
     }
   }
-  return res;
+  return ans;
 }
-
