@@ -18,7 +18,7 @@ vector<int> inorderTraversal(TreeNode* root) {
 }
 
 
-// #solution2
+// #version2
 vector<int> inorderTraversal(TreeNode *root) {
   vector<int> res;
   TreeNode *ptr = root;

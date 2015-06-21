@@ -19,7 +19,7 @@ ListNode* removeNthFromEnd(ListNode* head, int n) {
 }
 
 
-// #solution2
+// #version2
 ListNode* removeNthFromEnd(ListNode* head, int n) {
   if (head == NULL) return NULL;
   ListNode HEAD(0);

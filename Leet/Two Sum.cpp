@@ -17,7 +17,7 @@ vector<int> twoSum(vector<int>& nums, int target) {
   return {};
 }
 
-// #solution2
+// #version2
 vector<int> twoSum(vector<int>& nums, int target) {
   const int N = nums.size();
   if (N < 2) return {};

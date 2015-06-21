@@ -20,7 +20,7 @@ bool isValidBST(TreeNode* root) {
 }
 
 
-// #solution 2
+// #version2
 bool isValidBST(TreeNode *root) {
   TreeNode *last = NULL;
   TreeNode *ptr = root;
