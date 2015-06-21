@@ -1,13 +1,11 @@
+// #redo
 vector<int> grayCode(int n) {
-  vector<int> res;
-  res.push_back(0);
-  int N = 1;
-  for (int i = 0; i < n; i ++) {
-    int highestBit = 1 << i;
-    for (int i = N - 1; i >= 0; i --) {
-      res.push_back(res[i] | highestBit);
+  vector<int> ans;
+  ans.push_back(0);
+  for (int i = 0; i < n; ++ i) {
+    for (int j = (int) ans.size() - 1; j >= 0; -- j) {
+      ans.push_back(ans[j] | (1 << i));
     }
-    N <<= 1;
   }
-  return res;
+  return ans;
 }
