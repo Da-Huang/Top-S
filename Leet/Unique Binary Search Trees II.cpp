@@ -1,43 +1,24 @@
-TreeNode *copy(TreeNode *root) {
-  if ( root == NULL ) return NULL;
-  TreeNode *newRoot = new TreeNode(root->val);
-  newRoot->left = copy(root->left);
-  newRoot->right = copy(root->right);
-  return newRoot;
-}
-
-void del(TreeNode *root) {
-  if ( root == NULL ) return;
-  del(root->left);
-  del(root->right);
-  delete root;
-}
-
-vector<TreeNode *> __gen(int first, int last) {
-  vector<TreeNode*> res;
-  if ( first > last ) {
-    res.push_back(NULL);
-    return res;
+vector<TreeNode*> __generateTrees(int start, int last) {
+  vector<TreeNode*> ans;
+  if (start > last) {
+    ans.push_back(NULL);
+    return ans;
   }
-
-  for (int i = first; i <= last; i ++) {
-    vector<TreeNode*> l = __gen(first, i - 1);
-    vector<TreeNode*> r = __gen(i + 1, last);
-    for (auto &lu : l) {
-      for (auto &ru : r) {
-        TreeNode *root = new TreeNode(i);
-        root->left = copy(lu);
-        root->right = copy(ru);
-        res.push_back(root);
+  for (int i = start; i <= last; ++ i) {
+    auto leftAns = __generateTrees(start, i - 1);
+    auto rightAns = __generateTrees(i + 1, last);
+    for (TreeNode *left : leftAns) {
+      for (TreeNode *right : rightAns) {
+        TreeNode *node = new TreeNode(i);
+        node->left = left;
+        node->right = right;
+        ans.push_back(node);
       }
     }
-    for (auto &lu : l) del(lu);
-    for (auto &ru : r) del(ru);
   }
-  return res;
+  return ans;
 }
 
-vector<TreeNode *> generateTrees(int n) {
-  return __gen(1, n);
+vector<TreeNode*> generateTrees(int n) {
+  return __generateTrees(1, n);
 }
-
