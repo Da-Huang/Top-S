@@ -1,40 +1,23 @@
-vector<vector<int>> twoSum(vector<int> &num, int first, int target) {
-  int last = (int) num.size() - 1;
-  vector<vector<int>> res;
-  while ( first < last ) {
-    if ( num[first] + num[last] == target ) {
-      res.push_back(vector<int>{num[first], num[last]});
-    }
-    if ( num[first] + num[last] <= target ) {
-      int firstOld = first ++;
-      while ( first < last && num[first] == num[firstOld] ) first ++;
-    } else {
-      int lastOld = last --;
-      while ( first < last && num[last] == num[lastOld] ) last --;
-    }
-  }
-  return res;
-}
-
-vector<vector<int> > fourSum(vector<int> &num, int target) {
-  const int N = num.size();
-  vector<vector<int>> res;
-  if ( N < 4 ) return res;
-  sort(num.begin(), num.end());
-  int iBegin = 0;
-  while ( iBegin + 3 < N ) {
-    int jBegin = iBegin + 1;
-    while ( jBegin + 2 < N ) {
-      vector<vector<int>> subRes = twoSum(num, jBegin + 1, target - num[iBegin] - num[jBegin]);
-      for (auto &v : subRes) {
-        res.push_back(vector<int>({num[iBegin], num[jBegin], v[0], v[1]}));
+// #redo
+vector<vector<int>> fourSum(vector<int>& nums, int target) {
+  const int N = nums.size();
+  vector<vector<int>> ans;
+  if (N < 4) return ans;
+  sort(nums.begin(), nums.end());
+  for (int i = 0; i + 3 < N; ++ i) {
+    if (i > 0 && nums[i] == nums[i - 1]) continue;
+    for (int j = i + 1; j + 2 < N; ++ j) {
+      if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+      int first = j + 1, last = N - 1;
+      while (first < last) {
+        if (nums[i] + nums[j] + nums[first] + nums[last] > target) -- last;
+        else if (nums[i] + nums[j] + nums[first] + nums[last] < target) ++ first;
+        else {
+          ans.push_back({nums[i], nums[j], nums[first], nums[last]});
+          do ++ first; while (first < last && nums[first] == nums[first - 1]);
+        }
       }
-      int jBeginOld = jBegin ++;
-      while ( jBegin + 2 < N && num[jBegin] == num[jBeginOld] ) jBegin ++;
     }
-    int iBeginOld = iBegin ++;
-    while ( iBegin + 3 < N && num[iBegin] == num[iBeginOld] ) iBegin ++;
   }
-  return res;
+  return ans;
 }
-
