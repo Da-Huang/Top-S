@@ -1,40 +1,30 @@
+// #redo
 string longestPalindrome(string s) {
-  int N = s.length();
-  string extend = "#";
-  for (auto c : s) {
-    extend.push_back(c);
-    extend.push_back('#');
+  string str = "#";
+  for (char c : s) {
+    str.push_back(c);
+    str.push_back('#');
   }
-  N = 2 * N + 1;
-  int radis[N];
-  radis[0] = 0;
-  int i = 0;
-  while ( i < N ) {
-    int j = i + 1;
-    while ( j < i + radis[i] ) {
-      const int j2 = 2 * i - j;
-      if ( i - radis[i] != j2 - radis[j2] ) {
-        radis[j] = min(radis[j2], i + radis[i] - j);
-        j ++;
+  const int N = str.size();
+  int rads[N];
+  rads[0] = 0;
+  int i = 0, j = 1;
+  while (j < N) {
+    if (i + rads[i] < j || i + rads[i] == j + rads[2*i-j]) {
+      int k = i + rads[i] + 1;
+      i = j;
+      while (k < N && 2*i-k >= 0 && str[k] == str[2*i-k]) ++ k;
+      rads[i] = k - i - 1;
 
-      } else {
-        int k = i + radis[i] + 1;
-        while ( k < N && 2*j-k >= 0 && extend[k] == extend[2*j-k] ) k ++;
-        radis[j] = k - j - 1;
-        i = j;
-        j = i + 1;
-      }
+    } else {
+      rads[j] = min(rads[2*i-j], i + rads[i] - j);
     }
-    i = j;
-    j = i + 1;
-    while ( j < N && 2*i-j >= 0 && extend[j] == extend[2*i-j] ) j ++;
-    radis[i] = j - i - 1;
+    ++ j;
   }
-  int maxIndex = distance(radis, max_element(radis, radis + N));
-  string res;
-  for (int i = maxIndex - radis[maxIndex]; i <= maxIndex + radis[maxIndex]; i ++) {
-    if ( extend[i] != '#' ) res.push_back(extend[i]);
+  i = distance(rads, max_element(rads, rads + N));
+  string ans;
+  for (int j = i - rads[i]; j <= i + rads[i]; ++ j) {
+    if (str[j] != '#') ans.push_back(str[j]);
   }
-  return res;
+  return ans;
 }
-
