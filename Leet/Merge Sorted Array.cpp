@@ -1,13 +1,8 @@
-void merge(int A[], int m, int B[], int n) {
-  move_backward(A, A + m, A + m + n);
-  int i = n, j = 0;
-  int k = 0;
-  while ( i < m + n && j < n ) {
-    if ( A[i] <= B[j] ) A[k ++] = A[i ++];
-    else A[k ++] = B[j ++];
+void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+  int i = m - 1, j = n - 1, k = m + n - 1;
+  while (i >= 0 && j >= 0) {
+    if (nums1[i] >= nums2[j]) nums1[k --] = nums1[i --];
+    else nums1[k --] = nums2[j --];
   }
-  while ( j < n ) {
-    A[k ++] = B[j ++];
-  }
+  while (j >= 0) nums1[k --] = nums2[j --];
 }
-
