@@ -1,25 +1,15 @@
-void sortColors(int A[], int n) {
-  int b1, b2;
-  b1 = b2 = 0;
-  int i = 0;
-  while ( i < n ) {
-    if ( A[i] == 1 ) {
-      swap(A[b2], A[i]);
-      b2 ++;
-
-    } else if ( A[i] == 0 ) {
-      if ( b1 == b2 ) {
-        swap(A[b2], A[i]);
-        b2 ++; b1 ++;
-
-      } else {
-        swap(A[b1], A[i]);
-        b1 ++;
-        swap(A[b2], A[i]);
-        b2 ++;
-      }
+// #redo
+void sortColors(vector<int>& nums) {
+  int tail0 = 0, tail1 = 0, i = 0;
+  for (int i = 0; i < (int) nums.size(); ++ i) {
+    int num = nums[i];
+    if (num == 1) {
+      nums[i] = nums[tail1];
+      nums[tail1 ++] = num;
+    } else if (num == 0) {
+      nums[i] = nums[tail1];
+      nums[tail1 ++] = nums[tail0];
+      nums[tail0 ++] = num;
     }
-    i ++;
   }
 }
-
