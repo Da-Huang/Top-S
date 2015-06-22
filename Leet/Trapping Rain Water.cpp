@@ -1,15 +1,16 @@
-int trap(int A[], int n) {
-  int maxIndex = distance(A, max_element(A, A + n));
-  int res = 0;
-  int currentMax = 0;
-  for (int i = 0; i < maxIndex; i ++) {
-    currentMax = max(currentMax, A[i]);
-    res += currentMax - A[i];
+int trap(vector<int>& height) {
+  int ans = 0;
+  int rh = 0, lh = 0;
+  int i = 0, j = (int) height.size() - 1;
+  while (i < j) {
+    if (height[i] <= height[j]) {
+      lh = max(lh, height[i]);
+      ans += lh - height[i ++];
+
+    } else {
+      rh = max(rh, height[j]);
+      ans += rh - height[j --];
+    }
   }
-  currentMax = 0;
-  for (int i = n - 1; i > maxIndex; i --) {
-    currentMax = max(currentMax, A[i]);
-    res += currentMax - A[i];
-  }
-  return res;
+  return ans;
 }
