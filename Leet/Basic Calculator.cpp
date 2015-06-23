@@ -1,45 +1,38 @@
 // #redo
 int calculate(string s) {
-  const int N = s.size();
-  stack<int> nstk;
-  stack<char> sstk;
-  int begin = 0;
-  while (begin <= N) {
-    if (begin == N || s[begin] == ')') {
-      while (!sstk.empty() && sstk.top() != '(') {
-        int v2 = nstk.top();
-        nstk.pop();
-        if (sstk.top() == '+') nstk.top() = nstk.top() + v2;
-        else if (sstk.top() == '-') nstk.top() = nstk.top() - v2;
-        sstk.pop();
+  stack<int> vals;
+  stack<char> ops;
+  size_t begin = 0;
+  while (begin <= s.size()) {
+    if (begin == s.size() || s[begin] == '+' || s[begin] == '-' || s[begin] == ')') {
+      while (!ops.empty()) {
+        if (ops.top() == '(') {
+          if (begin < s.size() && s[begin] == ')') ops.pop();
+          break;
+        }
+
+        int v2 = vals.top();
+        vals.pop();
+        switch (ops.top()) {
+          case '+': vals.top() += v2; break;
+          case '-': vals.top() -= v2; break;
+        }
+        ops.pop();
       }
-      if (!sstk.empty()) sstk.pop();
+
+      if (begin < s.size() && (s[begin] == '+' || s[begin] == '-')) ops.push(s[begin]);
       ++ begin;
 
-    } else if (s[begin] == '+' || s[begin] == '-') {
-      if (!sstk.empty() && (sstk.top() == '+' || sstk.top() == '-')) {
-        int v2 = nstk.top();
-        nstk.pop();
-        if (sstk.top() == '+') nstk.top() = nstk.top() + v2;
-        else if (sstk.top() == '-') nstk.top() = nstk.top() - v2;
-        sstk.pop();
-      }
-      sstk.push(s[begin]);
-      ++ begin;
+    } else if (isdigit(s[begin])) {
+      int end = begin + 1;
+      while (end < s.size() && isdigit(s[end])) ++ end;
+      vals.push(stoi(s.substr(begin, end - begin)));
+      begin = end;
 
     } else if (s[begin] == '(') {
-      sstk.push('(');
-      ++ begin;
+      ops.push(s[begin ++]);
 
-    } else if (s[begin] == ' ') {
-      ++ begin;
-
-    } else {
-      int end = begin + 1;
-      while (end < N && isdigit(s[end])) ++ end;
-      nstk.push(stoi(s.substr(begin, end - begin)));
-      begin = end;
-    }
+    } else ++ begin;
   }
-  return nstk.top();
+  return vals.top();
 }
