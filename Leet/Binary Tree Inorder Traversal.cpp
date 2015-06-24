@@ -19,27 +19,23 @@ vector<int> inorderTraversal(TreeNode* root) {
 
 
 // #version2
-vector<int> inorderTraversal(TreeNode *root) {
-  vector<int> res;
-  TreeNode *ptr = root;
-  while ( ptr ) {
-    if ( ptr->left ) {
-      TreeNode *q = ptr->left;
-      while ( q->right && q->right != ptr ) q = q->right;
-      if ( q->right == NULL ) {
-        q->right = ptr;
-        ptr = ptr->left;
+vector<int> inorderTraversal(TreeNode* root) {
+  vector<int> ans;
+  while (root) {
+    TreeNode *l = root->left;
+    if (l) {
+      while (l->right && l->right != root) l = l->right;
+      if (l->right) {
+        l->right = NULL;
 
       } else {
-        q->right = NULL;
-        res.push_back(ptr->val);
-        ptr = ptr->right;
+        l->right = root;
+        root = root->left;
+        continue;
       }
-
-    } else {
-      res.push_back(ptr->val);
-      ptr = ptr->right;
     }
+    ans.push_back(root->val);
+    root = root->right;
   }
-  return res;
+  return ans;
 }
