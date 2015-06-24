@@ -15,29 +15,24 @@ vector<int> preorderTraversal(TreeNode* root) {
 }
 
 // #version2
-vector<int> preorderTraversal(TreeNode *root) {
-  vector<int> res;
-  TreeNode *ptr = root;
-  while ( ptr ) {
-    if ( ptr->left ) {
-      TreeNode *q = ptr->left;
-      while ( q->right && q->right != ptr ) q = q->right;
-      if ( q->right == NULL ) {
-        res.push_back(ptr->val);
-        q->right = ptr;
-        ptr = ptr->left;
-
+vector<int> preorderTraversal(TreeNode* root) {
+  vector<int> ans;
+  while (root) {
+    TreeNode *lr = root->left;
+    if (lr) {
+      while (lr->right && lr->right != root) lr = lr->right;
+      if (lr->right) {
+        lr->right = NULL;
+        root = root->right;
       } else {
-        q->right = NULL;
-        ptr = ptr->right;
+        lr->right = root;
+        ans.push_back(root->val);
+        root = root->left;
       }
-
     } else {
-      res.push_back(ptr->val);
-      ptr = ptr->right;
+      ans.push_back(root->val);
+      root = root->right;
     }
   }
-  return res;
+  return ans;
 }
-
-
