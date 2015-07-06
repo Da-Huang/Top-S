@@ -15,3 +15,23 @@ vector<string> anagrams(vector<string> &strs) {
   return res;
 }
 
+
+// #redo
+// #version2
+vector<string> anagrams(vector<string>& strs) {
+  unordered_map<string, vector<size_t>> MAP;
+  for (size_t i = 0; i < strs.size(); ++ i) {
+    string str = strs[i];
+    sort(str.begin(), str.end());
+    MAP[str].push_back(i);
+  }
+  vector<string> ans;
+  for (auto &p : MAP) {
+    if (p.second.size() > 1) {
+      for (size_t i : p.second) {
+        ans.push_back(strs[i]);
+      }
+    }
+  }
+  return ans;
+}
