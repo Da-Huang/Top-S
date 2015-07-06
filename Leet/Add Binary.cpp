@@ -1,31 +1,17 @@
+// #redo
 string addBinary(string a, string b) {
-  const int N = a.length();
-  const int M = b.length();
   reverse(a.begin(), a.end());
   reverse(b.begin(), b.end());
-  string res;
-  int i = 0, j = 0;
+  string ans;
   int c = 0;
-  while ( i < N && j < M ) {
-    int p = a[i] - '0' + b[j] - '0' + c;
-    res.push_back(p % 2 + '0');
-    c = p / 2;
-    i ++; j ++;
+  size_t i = 0, j = 0;
+  while (i < a.size() || j < b.size() || c) {
+    int p = c;
+    if (i < a.size()) p += a[i ++] - '0';
+    if (j < b.size()) p += b[j ++] - '0';
+    ans.push_back((p & 1) + '0');
+    c = p >> 1;
   }
-  while ( i < N ) {
-    int p = a[i] - '0' + c;
-    res.push_back(p % 2 + '0');
-    c = p / 2;
-    i ++;
-  }
-  while ( j < M ) {
-    int p = b[j] - '0' + c;
-    res.push_back(p % 2 + '0');
-    c = p / 2;
-    j ++;
-  }
-  if ( c ) res.push_back(c + '0');
-  reverse(res.begin(), res.end());
-  return res;
+  reverse(ans.begin(), ans.end());
+  return ans;
 }
-
