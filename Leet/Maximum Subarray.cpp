@@ -1,10 +1,10 @@
-int maxSubArray(int A[], int n) {
-  int cur = A[0];
-  int res = cur;
-  for (int i = 1; i < n; i ++) {
-    cur = max(cur + A[i], A[i]);
-    res = max(res, cur);
+int maxSubArray(vector<int>& nums) {
+  if (nums.size() == 0) return 0;
+  int ans = nums[0];
+  int sum = nums[0];
+  for (size_t i = 1; i < nums.size(); ++ i) {
+    sum = max(nums[i], sum + nums[i]);
+    ans = max(ans, sum);
   }
-  return res;
+  return ans;
 }
-
