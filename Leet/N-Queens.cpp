@@ -31,3 +31,33 @@ vector<vector<string> > solveNQueens(int n) {
   return __solve(n, 0, 0, 0);
 }
 
+
+// #redo
+// #version2
+void __solveQueens(int n, int begin, int x[], vector<vector<string>> &ans) {
+  if (begin == n) {
+    vector<string> item(n, string(n, '.'));
+    for (int i = 0; i < n; ++ i) item[x[i]][i] = 'Q';
+    ans.push_back(item);
+    return;
+  }
+  vector<bool> able(n, true);
+  for (int i = 0; i < begin; ++ i) {
+    able[x[i]] = false;
+    if (x[i] + (begin - i) < n) able[x[i] + (begin - i)] = false;
+    if (x[i] - (begin - i) >= 0) able[x[i] - (begin - i)] = false;
+  }
+  for (int i = 0; i < n; ++ i) {
+    if (able[i]) {
+      x[begin] = i;
+      __solveQueens(n, begin + 1, x, ans);
+    }
+  }
+}
+
+vector<vector<string> > solveNQueens(int n) {
+  int x[n];
+  vector<vector<string>> ans;
+  __solveQueens(n, 0, x, ans);
+  return ans;
+}
