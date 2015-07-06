@@ -17,3 +17,21 @@ string countAndSay(int n) {
   return res;
 }
 
+
+// #redo
+// #version2
+string countAndSay(int n) {
+  string ans = "1";
+  for (int i = 1; i < n; ++ i) {
+    string tmp;
+    int j = 0;
+    for (int k = 1; k <= (int) ans.size(); ++ k) {
+      if (k == (int) ans.size() || ans[k] != ans[j]) {
+        tmp += to_string(k - j) + ans[j];
+        j = k;
+      }
+    }
+    ans = move(tmp);
+  }
+  return ans;
+}
