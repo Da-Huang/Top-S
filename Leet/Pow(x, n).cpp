@@ -1,13 +1,12 @@
-double pow(double x, int n) {
-  double res = 1;
-  double y = x;
-  int m = n < 0 ? - (n + 1) : n;
-  for (int i = 0; i < 31; i ++) {
-    if ( m & (1 << i) ) {
-      res *= y;
-    }
-    y *= y;
+// #redo
+double myPow(double x, int n) {
+  double ans = 1;
+  double cache = x;
+  int m = n < 0 ? -(n + 1) : n;
+
+  for (int i = 0; i < 31; ++ i) {
+    if (m && (1 << i)) ans *= cache;
+    cache *= cache;
   }
-  if ( n < 0 ) res = 1 / res / x;
-  return res;
+  return n < 0 ? 1 / x / ans : ans;
 }
