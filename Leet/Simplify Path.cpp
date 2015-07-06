@@ -1,26 +1,18 @@
+// #redo
 string simplifyPath(string path) {
-  list<string> stk;
-  const int N = path.length();
-  int begin = 0;
-  while ( begin < N && path[begin] == '/' ) begin ++;
-  while ( begin < N ) {
-    int end = begin + 1;
-    while ( end < N && path[end] != '/' ) end ++;
-    string item = path.substr(begin, end - begin);
-    if ( item == ".." ) {
-      if ( !stk.empty() ) stk.pop_back();
-
-    } else if ( item != "." ) {
-      stk.push_back(item);
-    }
-    while ( end < N && path[end] == '/' ) end ++;
-    begin = end;
+  vector<string> stk;
+  size_t i = 1;
+  while (i < path.size()) {
+    size_t j = i;
+    while (j < path.size() && path[j] != '/') ++ j;
+    string item = path.substr(i, j - i);
+    if (item == "..") {
+      if (!stk.empty()) stk.pop_back();
+    } else if (!item.empty() && item != ".") stk.push_back(item);
+    i = j + 1;
   }
-  string res;
-  for (auto &item : stk) {
-    res += "/";
-    res += item;
-  }
-  return res.length() == 0 ? "/" : res;
+  if (stk.empty()) return "/";
+  string ans;
+  for (string &item : stk) ans += "/" + item;
+  return ans;
 }
-
