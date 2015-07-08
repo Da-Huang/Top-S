@@ -1,6 +1,6 @@
 class Stack {
   queue<int> que;
-  public:
+ public:
   // Push element x onto stack.
   void push(int x) {
     que.push(x);
