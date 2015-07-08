@@ -16,3 +16,24 @@ int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
   }
   return ans[M-1][N-1];
 }
+
+
+// #version2
+int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+  int M = obstacleGrid.size();
+  if (M == 0) return 0;
+  int N = obstacleGrid[0].size();
+  if (N == 0) return 0;
+
+  int ans[M+1][N+1];
+  for (int i = 0; i <= M; ++i) ans[i][0] = 0;
+  for (int j = 0; j <= N; ++j) ans[0][j] = 0;
+  ans[1][0] = 1;
+  
+  for (int i = 1; i <= M; ++i) {
+    for (int j = 1; j <= N; ++j) {
+      ans[i][j] = obstacleGrid[i-1][j-1] ? 0 : ans[i-1][j] + ans[i][j-1];
+    }
+  }
+  return ans[M][N];
+}
