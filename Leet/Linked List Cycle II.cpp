@@ -30,3 +30,27 @@ ListNode *detectCycle(ListNode *head) {
   }
   return p;
 }
+
+// #redo
+// #version2
+ListNode *detectCycle(ListNode *head) {
+  ListNode *p = head, *q = head;
+  while (q) {
+    p = p->next;
+    q = q->next;
+    if (q == nullptr) break;
+    q = q->next;
+    if (p == q) break;
+  }
+  if (q == nullptr) return nullptr;
+  int R = 1;
+  for (p = q->next; p != q; p = p->next) ++R;
+  p = head;
+  q = head;
+  for (int i = 0; i < R; ++i) q = q->next;
+  while (p != q) {
+    p = p->next;
+    q = q->next;
+  }
+  return p;
+}
