@@ -19,3 +19,21 @@ int countDigitOne(int n) {
   }
   return ans;
 }
+
+// #redo
+// #version2
+int countDigitOne(int n) {
+  int ans = 0;
+  int base = 1;
+  while (n / base) {
+    ans += n / base / 10 * base;
+    
+    int p = n / base % 10;
+    if (p == 1) ans += n % base + 1;
+    else if (p > 1) ans += base;
+    
+    if (n / 10 < base) break;
+    base *= 10;
+  }
+  return ans;
+}
