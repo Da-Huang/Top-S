@@ -1,5 +1,5 @@
 void deleteNode(ListNode* node) {
-  assert(node->next);
+  if (node == nullptr || node->next == nullptr) return;
   ListNode *ptr = node->next;
   node->val = ptr->val;
   node->next = ptr->next;
