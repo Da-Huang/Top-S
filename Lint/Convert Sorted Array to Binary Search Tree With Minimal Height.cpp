@@ -7,7 +7,7 @@ TreeNode *__sortedArrayToBST(vector<int> &A, int first, int last) {
   root->right = __sortedArrayToBST(A, mid + 1, last);
   return root;
 }
- 
+
 TreeNode *sortedArrayToBST(vector<int> &A) {
   return __sortedArrayToBST(A, 0, (int)A.size() - 1);
 }
