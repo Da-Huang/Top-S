@@ -27,3 +27,19 @@ int hIndex(vector<int>& citations) {
   }
   return N - first <= citations[first] ? N - first : N - first - 1;
 }
+
+// #version2
+int hIndex(vector<int>& citations) {
+  const int N = citations.size();
+  int count[N + 1];
+  memset(count, 0, sizeof(count));
+  for (int citation : citations) {
+    ++count[min(citation, N)];
+  }
+  int sum = 0;
+  for (int i = N; i > 0; --i) {
+    sum += count[i];
+    if (sum >= i) return i;
+  }
+  return 0;
+}
