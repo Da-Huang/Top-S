@@ -1,22 +1,20 @@
 // #redo
 string DeleteDigits(string A, int k) {
-  while (k) {
-    if (A.size() <= 1) return A;
-    int j = 0;
-    for (; j + 1 < (int)A.size(); ++j) {
-      if (A[j] > A[j + 1]) break;
-    }
-    if (j + 1 == (int)A.size()) {
-      A.resize((int)A.size() - k);
-      break;
-    }
-    A.erase(j, 1);
-    --k;
-  }
+  string ans;
   int i = 0;
-  for (; i + 1 < (int)A.size(); ++i) {
-    if (A[i] != '0') break;
+  while (i < (int)A.size()) {
+    if (k <= 0 || ans.empty() || ans.back() <= A[i])
+      ans.push_back(A[i++]);
+    else {
+      ans.pop_back();
+      --k;
+    }
   }
-  A.erase(0, i);
-  return A;
+  ans.resize(max(0, (int)ans.size() - k));
+  for (i = 0; i + 1 < (int)ans.size(); ++i) {
+    if (ans[i] != '0') break;
+  }
+  ans.erase(0, i);
+  if (ans.empty()) return "0";
+  return ans;
 }
