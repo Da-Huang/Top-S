@@ -81,7 +81,6 @@ void __findLadders(const unordered_map<string, int> &dist_map,
 // Each item is a path.
 vector<vector<string>> findLadders(const string &start, const string &end,
                                    const unordered_set<string> &dict) {
-  if (dict.find(start) == dict.end()) return {};
   queue<string> que;
   unordered_map<string, int> dist_map;
   dist_map[start] = 0;
@@ -94,7 +93,7 @@ vector<vector<string>> findLadders(const string &start, const string &end,
     for (char &c : item) {
       char oc = c;
       for (c = 'a'; c <= 'z'; ++c) {
-        if (dict.find(item) != dict.end() &&
+        if ((dict.find(item) != dict.end() || item == end) &&
             dist_map.find(item) == dist_map.end()) {
           dist_map[item] = dist + 1;
           que.push(item);
