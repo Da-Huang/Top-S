@@ -57,3 +57,44 @@ class Codec {
     return root;
   }
 };
+
+// #version2
+// Deserializes data recursively.
+class Codec {
+ public:
+  // Encodes a tree to a single string.
+  string serialize(TreeNode* root) {
+    string ans;
+    stack<TreeNode*> stk;
+    stk.push(root);
+    while (!stk.empty()) {
+      TreeNode* node = stk.top();
+      stk.pop();
+      if (node) {
+        ans += to_string(node->val);
+        stk.push(node->right);
+        stk.push(node->left);
+      }
+      ans += ",";
+    }
+    return ans;
+  }
+
+  TreeNode* _deserialize(const string& data, int& i) {
+    int old_i = i;
+    while (i < (int)data.size() && data[i] != ',') ++i;
+    ++i;
+    if (old_i + 1 == i) return nullptr;
+    TreeNode* root = new TreeNode(stoi(data.substr(old_i, i - old_i - 1)));
+
+    root->left = _deserialize(data, i);
+    root->right = _deserialize(data, i);
+    return root;
+  }
+
+  // Decodes your encoded data to tree.
+  TreeNode* deserialize(string data) {
+    int i = 0;
+    return _deserialize(data, i);
+  }
+};
