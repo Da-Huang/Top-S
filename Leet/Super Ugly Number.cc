@@ -12,3 +12,24 @@ int nthSuperUglyNumber(int n, vector<int>& primes) {
   }
   return ans.back();
 }
+
+// #version2
+int nthSuperUglyNumber(int n, vector<int>& primes) {
+  int ans_idxs[primes.size()];
+  memset(ans_idxs, 0, sizeof(ans_idxs));
+  vector<int> ans = {1};
+  vector<int> idx_heap(primes.size());
+  iota(idx_heap.begin(), idx_heap.end(), 0);
+  auto greater_num = [&primes, &ans_idxs, &ans](int i, int j) {
+    return ans[ans_idxs[i]] * primes[i] > ans[ans_idxs[j]] * primes[j];
+  };
+  make_heap(idx_heap.begin(), idx_heap.end(), greater_num);
+  while ((int)ans.size() < n) {
+    int num = ans[ans_idxs[idx_heap[0]]] * primes[idx_heap[0]];
+    if (num != ans.back()) ans.push_back(num);
+    pop_heap(idx_heap.begin(), idx_heap.end(), greater_num);
+    ++ans_idxs[idx_heap.back()];
+    push_heap(idx_heap.begin(), idx_heap.end(), greater_num);
+  }
+  return ans.back();
+}
